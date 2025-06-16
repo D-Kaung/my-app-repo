@@ -1,9 +1,6 @@
 package com.agb.myappdemo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,12 +24,27 @@ public class User {
     private Date LocalDate;
     private String Address;
 
-    public User(String username, String password, Integer phone, String nrc, Date localDate, String address) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "division_id", nullable = false)
+    private Division division;
+
+    @ManyToOne
+    @JoinColumn(name = "towship_id", nullable = false)
+    private Township township;
+
+    public User(String username, String password, String nrc,
+                Integer phone, Date localDate, String address, Role role, Division division, Township township) {
         this.username = username;
         this.password = password;
-        this.phone = phone;
         this.nrc = nrc;
+        this.phone = phone;
         LocalDate = localDate;
         Address = address;
+        this.role = role;
+        this.division = division;
+        this.township = township;
     }
 }

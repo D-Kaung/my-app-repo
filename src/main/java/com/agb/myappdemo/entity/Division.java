@@ -18,13 +18,20 @@ public class Division {
     private Long id;
     private String name;
 
-    @OneToMany
-    List<Township> townships;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Division(String name) {
+    @OneToMany(mappedBy = "division", cascade = CascadeType.ALL)
+    @JoinColumn(name = "division_id")
+    List<Township> townships;
+
+    @OneToMany(mappedBy = "division", cascade = CascadeType.ALL)
+    List<User> users;
+
+    public Division(String name, Status status, List<Township> townships, List<User> users) {
         this.name = name;
+        this.status = status;
+        this.townships = townships;
+        this.users = users;
     }
 }
