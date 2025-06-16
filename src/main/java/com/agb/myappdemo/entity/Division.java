@@ -17,6 +17,9 @@ public class Division {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
+
+    public Division(String name) {
+        this.name = name;
+    }
 }
