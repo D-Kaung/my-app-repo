@@ -19,6 +19,6 @@ public class Division {
     private Long id;
 
     private String username;
-    private
-    //afjhdsajf
+    private String password;
+    private String nr
 }
