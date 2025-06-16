@@ -22,11 +22,11 @@ public class Division {
     private Status status;
 
     @OneToMany(mappedBy = "division", cascade = CascadeType.ALL)
-    @JoinColumn(name = "division_id")
-    List<Township> townships;
+    private List<Township> townships;
 
     @OneToMany(mappedBy = "division", cascade = CascadeType.ALL)
-    List<User> users;
+    private List<User> users;
+
 
     public Division(String name, Status status, List<Township> townships, List<User> users) {
         this.name = name;

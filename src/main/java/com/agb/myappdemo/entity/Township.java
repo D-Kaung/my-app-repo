@@ -22,11 +22,13 @@ public class Township {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "township_id")
+    @JoinColumn(name = "division_id")
     private Division division;
 
     @OneToMany(mappedBy = "township", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
+
+
 
     public Township(String name, Status status, Division division, List<User> users) {
         this.name = name;
