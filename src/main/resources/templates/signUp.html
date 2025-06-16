@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 40px;
+        }
+        .signup-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .nrc-format {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="signup-container">
+        <h2 class="form-title">Create Your Account</h2>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <form th:action="@{/signUp}" th:object="${user}" method="post">
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" th:field="*{username}"
+                       placeholder="Enter your username." required>
+                <div th:if="${#fields.hasErrors('username')}" class="error-message"
+                     th:errors="*{username}"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" th:field="*{password}"
+                       placeholder="Enter your password." required>
+                <div th:if="${#fields.hasErrors('password')}" class="error-message"
+                     th:errors="*{password}"></div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                       placeholder="Enter your phone number." required>
+                <div th:if="${#fields.hasErrors('phone')}" class="error-message"
+                     th:errors="*{phone}"></div>
+            </div>
+
+            <!-- NRC -->
+            <div class="form-group">
+                <label for="nrc" class="form-label">NRC Number</label>
+                <input type="text" class="form-control" id="nrc" th:field="*{nrc}" required>
+                <div class="nrc-format">Format: 12/ABC(N)123456</div>
+                <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
+                     th:errors="*{nrc}"></div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+            </div>
+
+            <!-- Division Dropdown -->
+            <div class="form-group">
+                <label for="division" class="form-label">Division</label>
+                <select class="form-control" id="division" required>
+                    <option value="">Select Division</option>
+                    <option th:each="division : ${divisions}"
+                            th:value="${division.id}"
+                            th:text="${division.name}"></option>
+                </select>
+            </div>
+
+            <!-- Township Dropdown -->
+            <div class="form-group">
+                <label for="township" class="form-label">Township</label>
+                <select class="form-control" id="township" name="township.id" required>
+                    <option value="">Select Division First</option>
+                </select>
+                <div th:if="${#fields.hasErrors('township')}" class="error-message"
+                     th:errors="*{township}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
+            </div>
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Already have an account? <a th:href="@{/signIn}">Log in</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const divisionSelect = document.getElementById('division');
+        const townshipSelect = document.getElementById('township');
+
+        divisionSelect.addEventListener('change', function() {
+            const divisionId = this.value;
+            townshipSelect.innerHTML = '<option value="">Loading...</option>';
+
+            if (!divisionId) {
+                townshipSelect.innerHTML = '<option value="">Select Division First</option>';
+                return;
+            }
+
+            fetch(`/townships?divisionId=${divisionId}`)
+                .then(response => response.json())
+                .then(townships => {
+                    townshipSelect.innerHTML = '<option value="">Select Township</option>';
+                    townships.forEach(township => {
+                        const option = document.createElement('option');
+                        option.value = township.id;
+                        option.textContent = township.name;
+                        townshipSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading townships:', error);
+                    townshipSelect.innerHTML = '<option value="">Error loading townships</option>';
+                });
+        });
+
+// Initialize if returning to form with errors
+        if (divisionSelect.value) {
+            divisionSelect.dispatchEvent(new Event('change'));
+        }
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,14 +1,13 @@
 package com.agb.myappdemo.controller.admin;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/admin/member")
+
+@Controller
 public class MemberManagementController {
 
-    @GetMapping
+    @GetMapping("/admin/member")
     String index() {
         return "";
     }

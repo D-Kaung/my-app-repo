@@ -9,12 +9,9 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 public class User implements Serializable {
 
     @Serial
@@ -24,6 +21,7 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(nullable = false)
     private String username;
 
@@ -32,19 +30,19 @@ public class User implements Serializable {
 
     @Column(unique = true, nullable = false)
     @NotEmpty(message = "Phone number cannot be empty!")
-    @Pattern(regexp = "\\d+",message = "phone number must be only digits!")
-    private Integer phone;
+    @Pattern(regexp = "\\d+", message = "Phone number must be only digits!")
+    private String phone;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty(message = "nrc cannot be empty!")
+    @NotEmpty(message = "NRC cannot be empty!")
     @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
-             message = "NRC must be like nrc format(e.g 5/abc(N)123456)!")
+            message = "NRC must be in format (e.g., 5/ABC(N)123456)!")
     private String nrc;
 
     @Column(nullable = false)
-    private Date LocalDate;
+    private LocalDate dateOfBirth;
 
-    private String Address;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -57,16 +55,102 @@ public class User implements Serializable {
     @JoinColumn(name = "township_id", nullable = false)
     private Township township;
 
-    public User(String username, String password, String nrc,
-                Integer phone, Date localDate, String address, Role role, Division division, Township township) {
+    public User(String username, String password, String phone, String nrc,
+                LocalDate dateOfBirth, String address, Role role, Division division, Township township) {
         this.username = username;
         this.password = password;
-        this.nrc = nrc;
         this.phone = phone;
-        LocalDate = localDate;
-        Address = address;
+        this.nrc = nrc;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
         this.role = role;
         this.division = division;
+        this.township = township;
+    }
+
+    public User() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public @NotEmpty(message = "Phone number cannot be empty!") @Pattern(regexp = "\\d+", message = "Phone number must be only digits!") String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(@NotEmpty(message = "Phone number cannot be empty!") @Pattern(regexp = "\\d+", message = "Phone number must be only digits!") String phone) {
+        this.phone = phone;
+    }
+
+    public @NotEmpty(message = "NRC cannot be empty!") @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
+            message = "NRC must be in format (e.g., 5/ABC(N)123456)!") String getNrc() {
+        return nrc;
+    }
+
+    public void setNrc(@NotEmpty(message = "NRC cannot be empty!") @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
+            message = "NRC must be in format (e.g., 5/ABC(N)123456)!") String nrc) {
+        this.nrc = nrc;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Division getDivision() {
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public Township getTownship() {
+        return township;
+    }
+
+    public void setTownship(Township township) {
         this.township = township;
     }
 }

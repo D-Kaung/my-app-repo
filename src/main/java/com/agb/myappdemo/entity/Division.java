@@ -8,9 +8,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 public class Division {
 
     @Id
@@ -32,6 +29,42 @@ public class Division {
         this.name = name;
         this.status = status;
         this.townships = townships;
+        this.users = users;
+    }
+
+    public Division () {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<Township> getTownships() {
+        return townships;
+    }
+
+    public void setTownships(List<Township> townships) {
+        this.townships = townships;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 }
