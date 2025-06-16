@@ -1,4 +1,7 @@
 package com.agb.myappdemo.repository;
 
-public interface DivisionDao {
+import com.agb.myappdemo.entity.Division;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DivisionDao extends JpaRepository<Division, Long> {
 }

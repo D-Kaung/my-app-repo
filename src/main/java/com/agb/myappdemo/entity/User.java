@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -22,5 +24,15 @@ public class User {
     private String password;
     private Integer phone;
     private String nrc;
+    private Date LocalDate;
     private String Address;
+
+    public User(String username, String password, Integer phone, String nrc, Date localDate, String address) {
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.nrc = nrc;
+        LocalDate = localDate;
+        Address = address;
+    }
 }
