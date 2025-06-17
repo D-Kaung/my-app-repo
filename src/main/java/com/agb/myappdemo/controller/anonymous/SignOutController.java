@@ -1,5 +1,6 @@
 package com.agb.myappdemo.controller.anonymous;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SignOutController {
 
     @GetMapping
-    String idnex() {
-        return "";
+    String index(HttpSession session) {
+        session.invalidate();
+        return "redirect:/home";
     }
 }

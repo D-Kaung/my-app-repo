@@ -12,22 +12,26 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-
-        security.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/signIn", "/signOut", "/signUp").permitAll()
-                .anyRequest().authenticated()
-        )
-                .formLogin(form -> form
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/signUp", "/").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().permitAll()
+                )
+                .formLogin(login -> login
                         .loginPage("/signIn")
+                        .successHandler(new CustomLoginSuccessHandler())
                         .permitAll()
                 )
-                .logout(signOut -> signOut
+                .logout(logout -> logout
+                        .logoutUrl("/signOut")
+                        .logoutSuccessUrl("/")
                         .permitAll()
-
                 );
-        return security.build();
 
+        return http.build();
     }
 
     @Bean

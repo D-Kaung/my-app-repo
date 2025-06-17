@@ -1,15 +1,10 @@
 package com.agb.myappdemo.controller.anonymous;
 
-import com.agb.myappdemo.entity.Township;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.DivisionDao;
-import com.agb.myappdemo.repository.TownshipDao;
 import com.agb.myappdemo.service.UserServiceImpl;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,18 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/signUp")
-public class SIgnUpController {
+public class SignUpController {
 
     private final UserServiceImpl userServiceImpl;
+    private final DivisionDao divisionDao;
 
     @Autowired
-    public SIgnUpController(UserServiceImpl userServiceImpl) {
+    public SignUpController(UserServiceImpl userServiceImpl, DivisionDao divisionDao) {
         this.userServiceImpl = userServiceImpl;
+        this.divisionDao = divisionDao;
     }
 
     @GetMapping
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("division", divisionDao.findAll());
         return "signUp";
     }
 
@@ -40,6 +38,7 @@ public class SIgnUpController {
                                 BindingResult result,
                                 Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("division", divisionDao.findAll());
             return "signUp";
         }
 
