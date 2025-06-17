@@ -18,11 +18,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/admin/dashboard"); // or your admin page
+            response.sendRedirect("/admin/home"); // or your admin page
         } else if (roles.contains("ROLE_USER")) {
-            response.sendRedirect("/userProfile"); // or your user page
+            response.sendRedirect("/member/home"); // or your user page
         } else {
-            response.sendRedirect("/index"); // fallback
+            response.sendRedirect("/home"); // fallback
         }
     }
 
