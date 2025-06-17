@@ -47,4 +47,34 @@ public class UserServiceImpl implements UserService {
         // Save user
         userDao.save(user);
     }
+
+    @Override
+    public User findUserById(Integer userId) {
+        return userDao.findById(Long.valueOf(userId))
+                .orElse(null);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userDao.save(user);
+    }
+
+    @Override
+    public boolean existsByUsername(String newUsername) {
+        return userDao.findByUsername(newUsername).isPresent();
+    }
+
+    @Override
+    public boolean existsByPhone(String newPhone) {
+        return userDao.findByPhone(newPhone).isPresent();
+    }
+
+    @Override
+    public boolean existsByNrc(String newNrc) {
+        return userDao.findByNrc(newNrc).isPresent();
+    }
+
+    public void deleteUserById(int id) {
+        userDao.deleteById(id);
+    }
 }
