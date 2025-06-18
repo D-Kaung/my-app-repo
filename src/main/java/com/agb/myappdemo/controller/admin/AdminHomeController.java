@@ -88,7 +88,7 @@ public class AdminHomeController {
         return "memberPage";
     }
 
-    @PostMapping("/users/delete")
+    @PostMapping("/delete")
     public String deleteUser(@AuthenticationPrincipal UserDetails userDetails,
                              @RequestParam("id") int id,
                              RedirectAttributes redirectAttributes
@@ -130,7 +130,7 @@ public class AdminHomeController {
     }
 
 
-    @PatchMapping("/users/update")
+    @PatchMapping("/updateUser")
     public String updateUser(
             @RequestParam("userId") Integer userId,
             @RequestParam(value = "newAddress", required = false) String newAddress,
