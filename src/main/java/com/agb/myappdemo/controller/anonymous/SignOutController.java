@@ -12,6 +12,6 @@ public class SignOutController {
     @GetMapping
     String index(HttpSession session) {
         session.invalidate();
-        return "redirect:/home";
+        return "signIn";
     }
 }

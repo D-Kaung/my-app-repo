@@ -4,9 +4,17 @@ import com.agb.myappdemo.entity.Township;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.TownshipDao;
 import com.agb.myappdemo.repository.UserDao;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,6 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username).orElse(null);
+    }
+
+    @Override
     public boolean existsByUsername(String newUsername) {
         return userDao.findByUsername(newUsername).isPresent();
     }
@@ -77,4 +90,38 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(int id) {
         userDao.deleteById(id);
     }
+
+    public void generateExcel(HttpServletResponse response) throws IOException {
+
+        List<User> users = userDao.findAll();
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("DataOfAllUsers");
+        HSSFRow row = sheet.createRow(0);
+
+        row.createCell(0).setCellValue("ID");
+        row.createCell(1).setCellValue("Username");
+        row.createCell(2).setCellValue("Nrc");
+        row.createCell(3).setCellValue("Phone");
+
+        int dataRowIndex = 1;
+
+        for (User user: users){
+            HSSFRow dataRow = sheet.createRow(dataRowIndex);
+            dataRow.createCell(0).setCellValue(user.getId());
+            dataRow.createCell(1).setCellValue(user.getUsername());
+            dataRow.createCell(2).setCellValue(user.getNrc());
+            dataRow.createCell(3).setCellValue(user.getPhone());
+
+            dataRowIndex ++;
+        }
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
+
+    }
+
+
 }

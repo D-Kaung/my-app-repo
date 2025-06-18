@@ -2,6 +2,7 @@ package com.agb.myappdemo.controller.anonymous;
 
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.DivisionDao;
+import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,19 @@ public class SignUpController {
 
     private final UserServiceImpl userServiceImpl;
     private final DivisionDao divisionDao;
+    private final LocationService locationService;
 
     @Autowired
-    public SignUpController(UserServiceImpl userServiceImpl, DivisionDao divisionDao) {
+    public SignUpController(UserServiceImpl userServiceImpl, DivisionDao divisionDao, LocationService locationService) {
         this.userServiceImpl = userServiceImpl;
         this.divisionDao = divisionDao;
+        this.locationService = locationService;
     }
 
     @GetMapping
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("division", divisionDao.findAll());
+        model.addAttribute("divisions", locationService.getAllDivision() );
         return "signUp";
     }
 

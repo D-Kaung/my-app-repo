@@ -6,6 +6,7 @@ import com.agb.myappdemo.repository.UserDao;
 import com.agb.myappdemo.service.UserService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,7 +154,7 @@ public class AdminHomeController {
         User user = userService.findUserById(userId);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "User not found.");
-            return "redirect:/home";
+            return "redirect:/adminPage";
         }
 
         // Check for duplicates
@@ -193,9 +195,15 @@ public class AdminHomeController {
         if ("true".equals(returnToUserList)) {
             redirectAttributes.addAttribute("returnToUserList", true);
             redirectAttributes.addAttribute("editedUserId", userId); // Use userId directly
-            return "redirect:/home";
+            return "redirect:/adminPage";
         }
-        return "redirect:/home";
+        return "redirect:/adminPage";
+    }
+    @GetMapping("/users/export")
+    public void exportUsers(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=userList.xls");
+        userServiceImpl.generateExcel(response);
     }
 
 }

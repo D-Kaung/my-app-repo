@@ -39,7 +39,7 @@ public class User implements Serializable {
             message = "NRC must be in format (e.g., 5/ABC(N)123456)!")
     private String nrc;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     private String address;

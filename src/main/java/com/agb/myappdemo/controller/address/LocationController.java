@@ -40,17 +40,13 @@ public class LocationController {
         model.addAttribute("divisions", divisions);
         return "division";
     }
-
     @ResponseBody
     @GetMapping("/townships")
-    public List<TownshipDto> getTownshipsByDivisionId(@RequestParam("divisionId")Long divisionId){
-
-      List<Township> townships = locationService.getAllTownshipByDivisionId(divisionId, Status.ACTIVE);
-
-      return townships.stream()
-              .map(t -> new TownshipDto(t.getId(), t.getName(), t.getDivision().getId()))
-              .collect(Collectors.toList());
-
+    public List<TownshipDto> getTownshipsByDivisionId(@RequestParam("divisionId") Long divisionId) {
+        return locationService.getAllTownshipByDivisionId(divisionId, Status.ACTIVE)
+                .stream()
+                .map(t -> new TownshipDto(t.getId(), t.getName(), t.getDivision().getId()))
+                .collect(Collectors.toList());
     }
 
     @ResponseBody

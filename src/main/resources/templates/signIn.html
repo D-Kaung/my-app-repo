@@ -1,146 +1,260 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - MyApp</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #2B81AF;
+            --secondary-color: #6DD5FA;
+            --accent-color: #FFD700;
+            --dark-color: #182848;
+            --light-color: #ffffff;
+            --error-color: #ff4444;
+            --success-color: #00C851;
+        }
 
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body{
+        body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #2B81AF;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         }
 
-        .container{
-            width: 500px;
-            max-width: 500px;
-            background: #c1d6cc;
-            padding: 50px;
-            border-radius: 29px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-
-        }
-
-        .container form{
-            width: 100%;
-            height: 100%;
-            padding: 30px;
-
-
-        }
-
-        .container h1{
-            text-align: center;
-            font-weight: bold;
-            padding: 8.8%;
-            width: 100%;
-            text-decoration: underline;
-            ::after
-
-        }
-
-        .container form .form-control{
-            width: 100%;
-            height: 60px;
-            background: white;
+        .login-container {
+            width: 900px;
+            display: flex;
+            background: var(--light-color);
             border-radius: 20px;
-            border: 2px solid silver;
-            margin: 30px 0 10px 0;
-            padding: 0 10px;
-            cursor: pointer;
-
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
 
-        .container form .group {
-            font-weight: bold;
-            font-size: large;
-
-        }
-
-        .container form .group1 {
-            font-weight: bold;
-            font-size: large;
+        /* Left Column - Branding Section */
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(to right, var(--dark-color), var(--primary-color));
+            color: var(--light-color);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
-        .container form .button{
+        .brand-logo {
+            font-size: 80px;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+        }
+
+        .brand-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .brand-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Right Column - Form Section */
+        .form-section {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .form-title {
+            color: var(--dark-color);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: var(--error-color);
+            border-left: 4px solid var(--error-color);
+        }
+
+        .alert-success {
+            background-color: rgba(0, 200, 81, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
             width: 100%;
-            padding: 14px;
-            background-color: #0a53be;
-            color: #fff;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(43, 129, 175, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--dark-color), var(--primary-color));
+            color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 10px;
             font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-
+            transition: all 0.3s;
         }
 
-        .container form .button:hover{
-            background-color: cadetblue;
-
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                width: 95%;
+                max-width: 500px;
+            }
+
+            .brand-section, .form-section {
+                padding: 40px 30px;
+            }
+
+            .brand-logo {
+                font-size: 60px;
+                margin-bottom: 20px;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+        }
     </style>
-
 </head>
 <body>
 
-<div class="container">
+<div class="login-container">
+    <!-- Left Column - Branding Section -->
+    <div class="brand-section">
+        <i class="fas fa-user-shield brand-logo"></i>
+        <h1 class="brand-title">Welcome Back</h1>
+        <p class="brand-description">
+            Sign in to access your personalized dashboard and manage your account settings.
+            Our secure authentication ensures your data remains protected.
+        </p>
+    </div>
 
-    <form th:action="@{/signIn}" method="post">
-
-        <h1 style="color: peru">
-            Welcome back! from My App.
-        </h1>
-
-        <h4 style="color: peru">Please enter your details....</h4>
-        <br>
-        <br>
-
-        <div class="form group">
-            <label class="label" style="color: black">Username:
-                <input type="text" name="username" placeholder="Enter your username"
-                       class="form-control" required/>
-            </label>
+    <!-- Right Column - Form Section -->
+    <div class="form-section">
+        <div class="form-header">
+            <h2 class="form-title">Sign In</h2>
+            <p class="form-subtitle">Enter your credentials to continue</p>
         </div>
 
-
-        <div class="form group">
-            <label class="label" style="color: black">Password:
-                <input type="password" name="password"
-                       placeholder="Enter your password" class="form-control" required/>
-            </label>
+        <!-- Error Message -->
+        <div th:if="${loginError}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i> [[${loginError}]]
         </div>
 
-        <div th:if="${param.error}" class="error-message" style="color: red">
-            Your Username or Password is incorrect!! Pls check.
-        </div>
-        <br>
-
-        <div>
-            <button type="submit" class="button">Sign in</button>
-        </div>
-        <br>
-        <div class="form group1">
-            <span style="color: #dc3545">Not a member? <a th:href="@{/signUp}">Sign Up</a>
-        </span>
+        <!-- Success Message -->
+        <div th:if="${logoutSuccess}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i> [[${logoutSuccess}]]
         </div>
 
-    </form>
+        <form th:action="@{/signIn}" method="post">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username"
+                       class="form-control" placeholder="Enter your username" required
+                       th:classappend="${loginError} ? 'error-border' : ''">
+            </div>
 
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password"
+                       class="form-control" placeholder="Enter your password" required
+                       th:classappend="${loginError} ? 'error-border' : ''">
+            </div>
+
+            <button type="submit" class="btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+
+        <div class="form-footer">
+            Don't have an account? <a th:href="@{/signUp}">Sign up here</a>
+        </div>
+    </div>
 </div>
 
 </body>

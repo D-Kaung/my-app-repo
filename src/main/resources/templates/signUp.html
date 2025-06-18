@@ -13,7 +13,7 @@
             padding-top: 40px;
         }
         .signup-container {
-            max-width: 600px;
+            max-width: 550px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -89,16 +89,16 @@
                 <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
             </div>
 
-            <!-- Division Dropdown -->
-            <div class="form-group">
-                <label for="division" class="form-label">Division</label>
-                <select class="form-control" id="division" required>
-                    <option value="">Select Division</option>
-                    <option th:each="division : ${divisions}"
-                            th:value="${division.id}"
-                            th:text="${division.name}"></option>
-                </select>
-            </div>
+          <div class="form-group">
+              <label for="division" class="form-label">Division</label>
+              <select class="form-control" id="division"
+                      th:field="*{division.id}" required>
+                  <option value="">Select Division</option>
+                  <option th:each="division : ${divisions}"
+                          th:value="${division.id}"
+                          th:text="${division.name}"></option>
+              </select>
+          </div>
 
             <!-- Township Dropdown -->
             <div class="form-group">
@@ -135,11 +135,13 @@
         const divisionSelect = document.getElementById("division");
         const townshipSelect = document.getElementById("township");
         const hiddenInput = document.getElementById("township-id-hidden");
+        const addressField = document.getElementById("address");
 
         divisionSelect.addEventListener("change", async function() {
             const divisionId = this.value;
             townshipSelect.innerHTML = '<option value="">Loading...</option>';
             hiddenInput.value = "";
+            updateAddress(); // Clear address when division changes
 
             if (!divisionId) {
                 townshipSelect.innerHTML = '<option value="">Select Division First</option>';
@@ -148,16 +150,12 @@
 
             try {
                 const response = await fetch(`/townships?divisionId=${divisionId}`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
                 const townships = await response.json();
                 console.log("Received townships:", townships);
 
                 townshipSelect.innerHTML = '<option value="">Select Township</option>';
-
                 townships.forEach(township => {
                     const option = new Option(township.name, township.id);
                     townshipSelect.add(option);
@@ -171,12 +169,43 @@
 
         townshipSelect.addEventListener("change", function() {
             hiddenInput.value = this.value;
-            console.log("Selected township ID:", this.value);
+            updateAddress(); // Update address when township changes
         });
 
-        // Initialize if division is preselected (e.g., after validation error)
+        function updateAddress() {
+            const selectedDivision = divisionSelect.options[divisionSelect.selectedIndex].text;
+            const selectedTownship = townshipSelect.options[townshipSelect.selectedIndex].text;
+
+            // Only update if both are selected
+            if (divisionSelect.value && townshipSelect.value) {
+                addressField.value = `${selectedTownship}, ${selectedDivision}`;
+            } else {
+                addressField.value = "";
+            }
+        }
+
+        // Initialize if division is preselected
         if (divisionSelect.value) {
             divisionSelect.dispatchEvent(new Event("change"));
+        }
+    });
+    // Update your date validation to ensure proper format
+    document.getElementById("dateOfBirth").addEventListener("change", function() {
+        if (!this.value) return;
+
+        const dob = new Date(this.value);
+        const today = new Date();
+
+        // Validate minimum age (13 years)
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        if (age < 13) {
+            alert("You must be at least 13 years old");
+            this.value = "";
         }
     });
 </script>

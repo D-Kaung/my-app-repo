@@ -15,4 +15,6 @@ public interface UserService {
     boolean existsByNrc(String newNrc);
 
     void saveUser(User user);
+
+    User findByUsername(String username);
 }

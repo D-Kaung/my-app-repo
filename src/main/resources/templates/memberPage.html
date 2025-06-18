@@ -1,10 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a53be;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #d3d3d4;
+            border-radius: 20px;
+        }
+        .navbar-brand, .nav-link {
+            color: #141619 !important;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            background-color: #dc3545 !important;
+        }
+        .container {
+            max-width: 700px;
+            background: #d3d6d8;
+            padding: 80px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+        }
+        .profile-section {
+            text-align: center;
+            flex: 1;
+            padding: 40px;
+        }
+        .details-section {
+            flex: 2;
+            padding-left: 20px;
+            font-weight: bold;
+
+        }
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 90%;
+            object-fit: cover;
+            border: 6px solid #007bff;
+        }
+        .btn-custom {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #218838;
+        }
+        #passwordForm {
+            display: none;
+            margin-top: 20px;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            margin-top: 20px;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .message {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="/"><i class="fas fa-rocket"></i>My App</a>
 
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" onclick="showProfile()">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSettings()">Settings</a>
+            </li>
+            <li class="nav-item">
+                <form action="/signOut" method="get">
+                    <button type="submit" class="btn btn-danger">Sign Out</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Profile Section -->
+<div class="container" id="profileSection">
+    <div class="row">
+        <!-- Profile Picture Section -->
+        <div class="profile-section">
+            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+            </svg>
+        </div>
+
+        <!-- User Details Section -->
+        <div class="details-section">
+            <h3>User Profile</h3>
+            <p><strong>UserName:</strong> <span th:text="${username}"></span></p>
+            <p><strong>Role:</strong> <span th:text="${userRole}"></span></p>
+        </div>
+
+    </div>
+    <p class="message text-success text-center" th:if="${success}" th:text="${success}"></p>
+    <p class="message text-danger text-center" th:if="${error}" th:text="${error}"></p>
+</div>
+
+<!-- Settings Section (Hidden by default) -->
+<div class="container" id="settingsSection" style="display:none;">
+
+    <h4>Change Password</h4>
+    <form th:action="@{/member/home/updatePassword}" method="post">
+        <div class="form-group">
+            <label for="oldPassword">Old Password:</label>
+            <input type="password" name="oldPassword" required class="form-control" id="oldPassword" />
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password:</label>
+            <input type="password" name="newPassword" required class="form-control" id="newPassword" />
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm New Password:</label>
+            <input type="password" name="confirmPassword" required class="form-control" id="confirmPassword" />
+        </div>
+
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary ms-auto">Update Password</button>
+        </div>
+
+    </form>
+
+
+</div>
+
+<script>
+    function showProfile() {
+        document.getElementById('profileSection').style.display = 'block';
+        document.getElementById('settingsSection').style.display = 'none';
+    }
+
+    function showSettings() {
+        document.getElementById('profileSection').style.display = 'none';
+        document.getElementById('settingsSection').style.display = 'block';
+    }
+
+    // Default to showing the profile on page load
+    window.onload = function() {
+        showProfile();
+    };
+</script>
 </body>
 </html>
