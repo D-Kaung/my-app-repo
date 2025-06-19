@@ -86,18 +86,19 @@
             box-shadow: 0 0 8px rgba(10, 83, 190, 0.3);
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">MyApp</a>
+        <a class="navbar-brand" href="/">Home <i class="bi bi-house"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"></button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <form action="/signOut" method="get">
-                        <button type="submit" class="btn btn-danger btn-sm">Sign Out</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Sign Out</button>
                     </form>
                 </li>
             </ul>
@@ -105,26 +106,36 @@
     </div>
 </nav>
 
-<div class="container">
+<table id="townshipTable" class="table table-striped table-hover table-bordered" style="width:100%">
+    <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Division Name</th>
+        <th>Status</th>
+        <th>Action</th> <!-- new column -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="division : ${divisions}">
+        <td th:text="${division.id}"></td>
+        <td th:text="${division.name}"></td>
+        <td th:text="${division.status}"></td>
+        <td>
+            <form th:action="@{/update/divisionStatus}" method="post" class="d-flex gap-2 align-items-center">
+                <input type="hidden" name="divisionId" th:value="${division.id}" />
 
-    <table id="townshipTable" class="table table-striped table-hover table-bordered" style="width:100%">
+                <select name="newStatus" class="form-select form-select-sm" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                </select>
 
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Division Name</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="division : ${divisions}">
-            <td th:text="${division.id}">1</td>
-            <td th:text="${division.name}">Example Division</td>
-            <td th:text="${division.status}">ACTIVE</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 <script>
     $(document).ready(function () {

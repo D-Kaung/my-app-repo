@@ -45,4 +45,20 @@ public class LocationService {
     public List<User> getAllUserByTownshipId(Long divisionId) {
         return userDao.findUserByDivisionId(divisionId);
     }
+
+    public Division findDivisionId(Long divisionId) {
+        return divisionDao.findById(divisionId).orElse(null);
+    }
+
+    public void saveDivision(Division division) {
+        divisionDao.save(division);
+    }
+
+    public Township findTownshipId(Long townshipId) {
+        return townshipDao.findById(townshipId).orElse(null);
+    }
+
+    public void saveTownship(Township township){
+        townshipDao.save(township);
+    }
 }

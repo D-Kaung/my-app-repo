@@ -15,6 +15,9 @@ public class Division {
     private Long id;
     private String name;
 
+    private Double latitude;
+    private Double longitude;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -25,8 +28,12 @@ public class Division {
     private List<User> users;
 
 
-    public Division(String name, Status status, List<Township> townships, List<User> users) {
+    public Division(String name,Double latitude,
+                    Double longitude,
+                    Status status, List<Township> townships, List<User> users) {
         this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.status = status;
         this.townships = townships;
         this.users = users;
@@ -50,6 +57,22 @@ public class Division {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public Status getStatus() {

@@ -26,7 +26,11 @@ public class SecurityConfig {
                         .requestMatchers("/", "/signUp", "/townships","/users/townships",
                                 "/users/divisions","/updateUser","/delete",
                                 "/member/home/updatePassword",
-                                "/users/export").permitAll()
+                                "/users/export",
+                                "/township",
+                                "/update/divisionStatus",
+                                "/update/townshipStatus",
+                                "/division").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/member/**").hasRole("USER")
                         .anyRequest().authenticated()

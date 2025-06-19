@@ -1,5 +1,7 @@
 package com.agb.myappdemo.dto;
 
+import java.time.LocalDate;
+
 public class UserDto {
 
     private int id;
@@ -7,18 +9,16 @@ public class UserDto {
     private String phone;
     private String nrc;
     private String address;
-    private Long divisionId;
-    private Long townshipId;
+    private LocalDate dateOfBirth;
 
-    public UserDto(int id, String username, String phone, String nrc, String address, Long divisionId,
-                   Long townshipId) {
+    public UserDto(int id, String username, String phone, String nrc, String address, LocalDate dateOfBirth) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.nrc = nrc;
         this.address = address;
-        this.divisionId = divisionId;
-        this.townshipId = townshipId;
+        this.dateOfBirth = dateOfBirth;
+
     }
 
     public int getId() {
@@ -61,19 +61,11 @@ public class UserDto {
         this.address = address;
     }
 
-    public Long getDivisionId() {
-        return divisionId;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDivisionId(Long divisionId) {
-        this.divisionId = divisionId;
-    }
-
-    public Long getTownshipId() {
-        return townshipId;
-    }
-
-    public void setTownshipId(Long townshipId) {
-        this.townshipId = townshipId;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

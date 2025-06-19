@@ -12,6 +12,9 @@ public class Township {
     private Long id;
     private String name;
 
+    private Double latitude;
+    private Double longitude;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -24,8 +27,13 @@ public class Township {
 
 
 
-    public Township(String name, Status status, Division division, List<User> users) {
+    public Township(String name,
+                    Double latitude,
+                    Double longitude,
+                    Status status, Division division, List<User> users) {
         this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.status = status;
         this.division = division;
         this.users = users;

@@ -7,24 +7,31 @@ import com.agb.myappdemo.entity.Status;
 import com.agb.myappdemo.entity.Township;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.service.LocationService;
+import com.agb.myappdemo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
 public class LocationController {
 
    private final LocationService locationService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, UserServiceImpl userServiceImpl) {
         this.locationService = locationService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping("/township")
@@ -34,7 +41,7 @@ public class LocationController {
         return "township";
     }
 
-    @GetMapping("division")
+    @GetMapping("/division")
     String viewDivision(Model model) {
         List<Division> divisions = locationService.getAllDivision();
         model.addAttribute("divisions", divisions);
@@ -57,7 +64,7 @@ public class LocationController {
 
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getUsername(), u.getPhone(), u.getNrc()
-                , u.getAddress(), u.getDivision().getId(), u.getTownship().getId()))
+                , u.getAddress(), u.getDateOfBirth()))
                 .collect(Collectors.toList());
     }
 
@@ -69,9 +76,41 @@ public class LocationController {
 
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getUsername(), u.getPhone(), u.getNrc(),
-                        u.getAddress(), u.getDivision().getId(),
-                        u.getTownship().getId()))
+                        u.getAddress(), u.getDateOfBirth()))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/update/divisionStatus")
+    public String updateStatus(@RequestParam(value = "newStatus", required = false)Status newStatus,
+                               @RequestParam("divisionId")Long divisionId,
+                               RedirectAttributes redirectAttributes) {
+
+        Division division = locationService.findDivisionId(divisionId);
+
+        if (division == null ){
+            redirectAttributes.addFlashAttribute("error", "There is no division.");
+            return "redirect:/division";
+        }
+
+        if (newStatus != null) division.setStatus(newStatus);
+        locationService.saveDivision(division);
+        return "redirect:/division";
+    }
+
+    @PostMapping("/update/townshipStatus")
+    public String updateStatus(@RequestParam("townshipId")Long townshipId,
+                               @RequestParam(value = "newStatus",required = false)Status newStatus,
+                               RedirectAttributes redirectAttributes){
+
+        Township township = locationService.findTownshipId(townshipId);
+
+        if (township == null) {
+            redirectAttributes.addFlashAttribute("error", "There is no township.");
+            return "redirect:/township";
+        }
+         if (newStatus != null) township.setStatus(newStatus);
+         locationService.saveTownship(township);
+         return "redirect:/township";
     }
 
 }
