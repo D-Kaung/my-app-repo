@@ -99,19 +99,23 @@ public class UserServiceImpl implements UserService {
         HSSFSheet sheet = workbook.createSheet("DataOfAllUsers");
         HSSFRow row = sheet.createRow(0);
 
-        row.createCell(0).setCellValue("ID");
-        row.createCell(1).setCellValue("Username");
-        row.createCell(2).setCellValue("Nrc");
-        row.createCell(3).setCellValue("Phone");
+        row.createCell(0).setCellValue("Username");
+        row.createCell(1).setCellValue("Nrc");
+        row.createCell(2).setCellValue("Phone");
+        row.createCell(3).setCellValue("Address");
+        row.createCell(4).setCellValue("Role");
+        row.createCell(5).setCellValue("DateOfBirth");
 
         int dataRowIndex = 1;
 
         for (User user: users){
             HSSFRow dataRow = sheet.createRow(dataRowIndex);
-            dataRow.createCell(0).setCellValue(user.getId());
-            dataRow.createCell(1).setCellValue(user.getUsername());
-            dataRow.createCell(2).setCellValue(user.getNrc());
-            dataRow.createCell(3).setCellValue(user.getPhone());
+            dataRow.createCell(0).setCellValue(user.getUsername());
+            dataRow.createCell(1).setCellValue(user.getNrc());
+            dataRow.createCell(2).setCellValue(user.getPhone());
+            dataRow.createCell(3).setCellValue(user.getAddress());
+            dataRow.createCell(4).setCellValue(String.valueOf(user.getRole()));
+            dataRow.createCell(5).setCellValue(user.getDateOfBirth());
 
             dataRowIndex ++;
         }

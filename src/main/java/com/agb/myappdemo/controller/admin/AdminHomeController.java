@@ -3,6 +3,7 @@ package com.agb.myappdemo.controller.admin;
 import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
+import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +35,19 @@ public class AdminHomeController {
     private final UserDao userDao;
     private final UserService userService;
     private final UserServiceImpl userServiceImpl;
+    private final PasswordEncoder passwordEncoder;
+    private final LocationService locationService;
 
     @Autowired
-    public AdminHomeController(UserDao userDao,UserService userService, UserServiceImpl userServiceImpl) {
+    public AdminHomeController(UserDao userDao, UserService userService,
+                               UserServiceImpl userServiceImpl,
+                               PasswordEncoder passwordEncoder,
+                               LocationService locationService) {
         this.userDao = userDao;
         this.userService = userService;
         this.userServiceImpl = userServiceImpl;
+        this.passwordEncoder = passwordEncoder;
+        this.locationService = locationService;
     }
 
     @GetMapping("/admin/home")
@@ -82,6 +91,7 @@ public class AdminHomeController {
             model.addAttribute("totalPages", pagedUsers.getTotalPages());
             model.addAttribute("currentPage", pagedUsers.getNumber());
             model.addAttribute("ADMIN", true);
+            model.addAttribute("divisions", locationService.getAllDivision());
             return "adminPage";
         }
 
@@ -100,14 +110,14 @@ public class AdminHomeController {
 
         if (!isAdmin){
             redirectAttributes.addFlashAttribute("error", "unauthorized to delete user");
-            return "redirect:/home?returnToUserList=true";
+            return "redirect:/admin/home?returnToUserList=true";
         }
 
         User currentUser = userDao.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("CurrentUser not found"));
         if (currentUser.getId() == id){
             redirectAttributes.addFlashAttribute("error", "Cannot delete yourself");
-            return "redirect:/home?returnToUserList=true";
+            return "redirect:/admin/home?returnToUserList=true";
         }
         try{
             System.out.println("Attempting to delete user with ID: " + id);
@@ -116,7 +126,7 @@ public class AdminHomeController {
 
             if (!optionalUser.isPresent()){
                 redirectAttributes.addFlashAttribute("error", "User not found");
-                return "redirect:/home?returnToUserList=true";
+                return "redirect:/admin/home?returnToUserList=true";
             }
 
             userServiceImpl.deleteUserById(id);
@@ -126,7 +136,7 @@ public class AdminHomeController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
 
         }
-        return "redirect:/home?returnToUserList=true";
+        return "redirect:/admin/home?returnToUserList=true";
     }
 
 
@@ -154,7 +164,7 @@ public class AdminHomeController {
         User user = userService.findUserById(userId);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "User not found.");
-            return "redirect:/adminPage";
+            return "redirect:/admin/home";
         }
 
         // Check for duplicates
@@ -195,9 +205,9 @@ public class AdminHomeController {
         if ("true".equals(returnToUserList)) {
             redirectAttributes.addAttribute("returnToUserList", true);
             redirectAttributes.addAttribute("editedUserId", userId); // Use userId directly
-            return "redirect:/adminPage";
+            return "redirect:/admin/home";
         }
-        return "redirect:/adminPage";
+        return "redirect:/admin/home";
     }
     @GetMapping("/users/export")
     public void exportUsers(HttpServletResponse response) throws IOException {
@@ -206,4 +216,42 @@ public class AdminHomeController {
         userServiceImpl.generateExcel(response);
     }
 
+    @PostMapping("/admin/updatePassword")
+    public String updatePassword(Model model,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 @RequestParam("oldPassword")String oldPassword,
+                                 @RequestParam("newPassword")String newPassword,
+                                 @RequestParam("confirmPassword")String confirmPassword) {
+
+        model.addAttribute("oldPassword", userDetails.getPassword());
+
+        model.addAttribute("error", false);
+
+        model.addAttribute("success", false);
+
+
+        User user = userServiceImpl.findByUsername(userDetails.getUsername());
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())){
+            model.addAttribute("error", "Old password does not match");
+            return "redirect:/admin/home";
+        }
+        if (passwordEncoder.matches(newPassword, user.getPassword())){
+            model.addAttribute("error", "New password does not same with the old password");
+            return "redirect:/admin/home";
+        }
+        if (!newPassword.equals(confirmPassword)){
+            model.addAttribute("error", "New password does match");
+            return "redirect:/admin/home";
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        userServiceImpl.saveUser(user);
+
+        model.addAttribute("success", "Finally done update password");
+
+        return "redirect:/admin/home";
+
+    }
 }
