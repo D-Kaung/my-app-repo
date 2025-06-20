@@ -30,6 +30,7 @@ public class SecurityConfig {
                                 "/township",
                                 "/update/divisionStatus",
                                 "/update/townshipStatus",
+                                "/map",
                                 "/division").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/member/**").hasRole("USER")

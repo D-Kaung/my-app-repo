@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Google Maps with Township Info</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h3 {
+            margin: 0;
+            padding: 12px;
+            background-color: #4285F4;
+            color: white;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        #map {
+            height: calc(100% - 48px); /* Full height minus header */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h3>Google Maps Township Demo</h3>
+<div id="map"></div>
+
+<script>
+    (g => {
+        var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",
+            m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}),
+            r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => {
+                await (a = m.createElement("script"));
+                e.set("libraries", [...r] + "");
+                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                e.set("callback", c + ".maps." + q);
+                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                d[q] = f;
+                a.onerror = () => h = n(Error(p + " could not load."));
+                a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                m.head.append(a)
+            }));
+        d[l] ? console.warn(p + " only loads once. Ignoring:", g) :
+            d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+    })({ key: "AIzaSyBN93kkmCC5LXfQZ-lHndlxO5lOSgRZu_8", v: "weekly" }); // replace with your API key
+</script>
+
+<script>
+    let map;
+
+    async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        const { InfoWindow } = await google.maps.importLibrary("maps");
+
+        // Township markers
+        const townships = [
+            {
+                name: "Hlaing",
+                lat: 16.84556457830302,
+                lng: 96.1216427973765
+            },
+            {
+                name: "Sule",
+                lat: 16.77511582952278,
+                lng:  96.15890711096415
+            },
+            {
+                name: "Thamine",
+                lat: 16.863423924769688,
+                lng: 96.12155740169175
+            },
+            {
+                name: "Sanchaung",
+                lat: 16.80642563559068,
+                lng: 96.13412168132547
+            },
+            {
+                name: "SouthDagon",
+                lat: 16.85773309381519,
+                lng:  96.24046343544438
+            },
+            {
+                name: "Kamayaut",
+                lat: 16.82868412234077,
+                lng: 96.1303722602962
+            },
+            {
+                name: "Yankin",
+                lat: 16.833212077863898,
+                lng:  96.1662783289023
+            },
+            {
+                name: "Insein",
+                lat: 16.908221288148223,
+                lng: 96.09770689702606
+            }
+        ];
+
+        // Initialize map centered at first township
+        map = new Map(document.getElementById("map"), {
+            zoom: 5,
+            center: { lat: townships[0].lat, lng: townships[0].lng },
+            mapId: "DEMO_MAP_ID",
+        });
+
+        // Add markers with info windows
+        townships.forEach((township) => {
+            const marker = new AdvancedMarkerElement({
+                map: map,
+                position: { lat: township.lat, lng: township.lng },
+                title: township.name
+            });
+
+            const infoWindow = new InfoWindow({
+                content: `
+                    <div>
+                        <strong>${township.name}</strong><br>
+                        Latitude: ${township.lat}<br>
+                        Longitude: ${township.lng}
+                    </div>
+                `
+            });
+
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
+            });
+        });
+    }
+
+    initMap();
+</script>
+</body>
+</html>
