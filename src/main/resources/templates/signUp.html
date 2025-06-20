@@ -47,81 +47,97 @@
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
         <form th:action="@{/signUp}" th:object="${user}" method="post">
-            <!-- Username -->
-            <div class="form-group">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" th:field="*{username}"
-                       placeholder="Enter your username" required>
-                <div th:if="${#fields.hasErrors('username')}" class="error-message"
-                     th:errors="*{username}"></div>
+            <div class="row">
+                <!-- Left Side -->
+                <div class="col-md-6">
+                    <h5 class="mb-3">Account Information</h5>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" th:field="*{username}"
+                               placeholder="Enter your username" required>
+                        <div th:if="${#fields.hasErrors('username')}" class="error-message"
+                             th:errors="*{username}"></div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" th:field="*{password}"
+                               placeholder="Enter your password" required>
+                        <div th:if="${#fields.hasErrors('password')}" class="error-message"
+                             th:errors="*{password}"></div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                               placeholder="Enter your phone number" required>
+                        <div th:if="${#fields.hasErrors('phone')}" class="error-message"
+                             th:errors="*{phone}"></div>
+                    </div>
+
+                    <!-- NRC -->
+                    <div class="form-group">
+                        <label for="nrc" class="form-label">NRC Number</label>
+                        <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
+                               placeholder="Format: 12/ABC(N)123456" required>
+                        <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
+                             th:errors="*{nrc}"></div>
+                    </div>
+                </div>
+
+                <!-- Right Side -->
+                <div class="col-md-6">
+                    <h5 class="mb-3">Location & Personal Info</h5>
+
+                    <!-- Date of Birth -->
+                    <div class="form-group">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                    </div>
+
+                    <!-- Division -->
+                    <div class="form-group">
+                        <label for="division" class="form-label">Division</label>
+                        <select class="form-control" id="division" th:field="*{division.id}" required>
+                            <option value="">Select Division</option>
+                            <option th:each="division : ${divisions}"
+                                    th:value="${division.id}"
+                                    th:text="${division.name}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Township -->
+                    <div class="form-group">
+                        <label for="township" class="form-label">Township</label>
+                        <select class="form-control" id="township" name="township.id" required>
+                            <option value="">Select Division First</option>
+                        </select>
+                        <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
+                        <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-group">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
+
+                        <!-- Map Button -->
+                        <a href="/map">Select From Map</a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Password -->
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}"
-                       placeholder="Enter your password" required>
-                <div th:if="${#fields.hasErrors('password')}" class="error-message"
-                     th:errors="*{password}"></div>
-            </div>
-
-            <!-- Phone -->
-            <div class="form-group">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" th:field="*{phone}"
-                       placeholder="Enter your phone number" required>
-                <div th:if="${#fields.hasErrors('phone')}" class="error-message"
-                     th:errors="*{phone}"></div>
-            </div>
-
-            <!-- NRC -->
-            <div class="form-group">
-                <label for="nrc" class="form-label">NRC Number</label>
-                <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
-                       placeholder="Format: 12/ABC(N)123456" required>
-                <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
-                     th:errors="*{nrc}"></div>
-            </div>
-
-            <!-- Date of Birth -->
-            <div class="form-group">
-                <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
-            </div>
-
-          <div class="form-group">
-              <label for="division" class="form-label">Division</label>
-              <select class="form-control" id="division"
-                      th:field="*{division.id}" required>
-                  <option value="">Select Division</option>
-                  <option th:each="division : ${divisions}"
-                          th:value="${division.id}"
-                          th:text="${division.name}"></option>
-              </select>
-          </div>
-
-            <!-- Township Dropdown -->
-            <div class="form-group">
-                <label for="township" class="form-label">Township</label>
-                <select class="form-control" id="township" name="township.id" required>
-                    <option value="">Select Division First</option>
-                </select>
-                <input type="hidden" id="township-id-hidden" th:field="*{township.id}"/>
-                <div th:if="${#fields.hasErrors('township')}" class="error-message"
-                     th:errors="*{township}"></div>
-            </div>
-
-            <!-- Address -->
-            <div class="form-group">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
-                <a href="/map">Map</a>
-            </div>
-
+            <!-- Submit Button -->
             <div class="form-group mt-4">
                 <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             </div>
         </form>
+
+
 
         <div class="text-center mt-3">
             <p>Already have an account? <a th:href="@{/signIn}">Sign in</a></p>

@@ -129,7 +129,7 @@ public class AdminHomeController {
                 return "redirect:/admin/home?returnToUserList=true";
             }
 
-            userServiceImpl.deleteUserById(id);
+            userServiceImpl.deleteUser(id);
             redirectAttributes.addFlashAttribute("success", "User deleted successfully");
 
         }catch (Exception e) {

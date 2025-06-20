@@ -6,6 +6,7 @@ import com.agb.myappdemo.repository.TownshipDao;
 import com.agb.myappdemo.repository.UserDao;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -54,6 +55,11 @@ public class UserServiceImpl implements UserService {
 
         // Save user
         userDao.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(int id) {
+        userDao.deleteById(id);
     }
 
     @Override
