@@ -161,6 +161,137 @@
             /* Keep your existing styles */
             text-align: center;
         }
+        /* Profile Card Styles */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .avatar i {
+            font-size: 50px;
+            color: #4361ee;
+        }
+
+        .profile-name {
+            margin: 10px 0 5px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .profile-role {
+            font-size: 0.9rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .profile-details {
+            padding: 25px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-label i {
+            font-size: 1.1rem;
+            color: #4361ee;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            padding: 0 25px 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 180px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .profile-card {
+                border-radius: 0;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
@@ -191,32 +322,42 @@
     </div>
 </nav>
 
-<div class="container my-4">
-    <div class="card shadow-lg border-0 rounded-4" id="userProfile">
-        <div class="card-body text-center p-4">
-            <div class="mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"
-                     class="bi bi-person-circle text-primary" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                    <path fill-rule="evenodd"
-                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242
-                             11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                </svg>
-                <h3 class="mt-3 fw-semibold">User Profile</h3>
+<div class="container my-4" id="userProfile">
+    <div class="profile-card">
+        <!-- Profile Header with Avatar -->
+        <div class="profile-header">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h2 class="profile-name" th:text="${usersName}">Username</h2>
+                <span class="profile-role badge bg-primary" th:text="${usersRoles}">Role</span>
+            </div>
+        </div>
+
+        <!-- Profile Details -->
+        <div class="profile-details">
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="bi bi-person-fill"></i> Username:
+                </span>
+                <span class="detail-value" th:text="${usersName}">username</span>
             </div>
 
-            <div class="row  mt-4">
-                <div class="col-7 text-start">
-                    <p><strong>Username:</strong> <span th:text="${usersName}"></span></p>
-                    <p><strong>Role:</strong> <span th:text="${usersRoles}"></span></p>
-                </div>
-                <div class="col-4 text-md-end text-start ">
-                    <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal"
-                            data-bs-target="#passwordModal">
-                        <i class="bi bi-key-fill"></i>Update Password
-                    </button>
-                </div>
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="bi bi-shield-lock"></i> Role:
+                </span>
+                <span class="detail-value" th:text="${usersRoles}">role</span>
             </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+            <button class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                <i class="bi bi-key-fill"></i> Change Password
+            </button>
         </div>
     </div>
 </div>
@@ -294,7 +435,7 @@
                         <input type="text" class="form-control" id="editNrc" name="newNrc"
                                th:value="${currentNrc  ?: user?.nrc}"
                                placeholder="Enter your NRC..">
-                        <div th:if="${nrcError}" class="text-danger" th:text="${nrcError>"></div>
+                        <div th:if="${nrcError}" class="text-danger" th:text="${nrcError}"></div>
                     </div>
                     <div class="mb-3">
                         <label for="editRole" class="form-label">Role</label>
@@ -353,20 +494,27 @@
         <h2 class="text-start mb-4">Registered Users<i class="bi bi-people-fill"></i></h2>
         <table class="display compact" id="example" style="width: 100%">
                     <!-- Division and Township Select Boxes -->
-                    <div class="row mb-0">
-                        <div class="col-md-auto">
-                            <label for="divisionSelect" class="form-label">Division</label>
-                            <select class="form-select" id="divisionSelect">
-                                <option value="">Select Division</option>
-                            </select>
-                        </div>
-                        <div class="col-md-auto">
-                            <label for="townshipSelect" class="form-label">Township</label>
-                            <select class="form-select" id="townshipSelect">
-                                <option value="">Select Township</option>
-                            </select>
-                        </div>
-                    </div>
+            <!-- Add this where you want to display the division select box -->
+            <div class="row mb-3">
+                <div class="col-md-auto">
+                    <label for="divisionSelect" class="form-label">Division</label>
+                    <select class="form-select" id="divisionSelect"
+                            th:disabled="${divisions == null or divisions.empty}">
+                        <option value="">Select Division</option>
+                        <!-- Thymeleaf will iterate through divisions -->
+                        <option th:each="division : ${divisions}"
+                                th:value="${division.id}"
+                                th:text="${division.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-auto">
+                    <label for="townshipSelect" class="form-label">Township</label>
+                    <select class="form-select" id="townshipSelect" disabled>
+                        <option value="">Select division first</option>
+                    </select>
+                </div>
+            </div>
             <thead class="table-dark">
             <div class="row">
                 <div class="col-12 mb-2 text-end">
@@ -432,12 +580,13 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
 <script>
+
     $(document).ready(function () {
-        $('#example').DataTable({
+      const table = $('#example').DataTable({
             "searching": true,
             "columnDefs": [
                 {
-                    "targets": [2,3,4,5,6,7],
+                    "targets": [2, 3, 4, 5, 6, 7],
                     "searchable": true
                 },
                 {
@@ -497,9 +646,10 @@
                 });
             }
         });
+
     });
     // Handle password modal
-    document.getElementById('passwordForm')?.addEventListener('submit', function(e) {
+    document.getElementById('passwordForm')?.addEventListener('submit', function (e) {
         const newPassword = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -513,61 +663,153 @@
     });
 
     // Initialize modals properly
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Initialize all Bootstrap modals
         var modals = document.querySelectorAll('.modal');
-        modals.forEach(function(modal) {
+        modals.forEach(function (modal) {
             new bootstrap.Modal(modal);
         });
     });
 
+    $('#divisionSelect').change(function () {
+        const divisionId = $(this).val();
+        const townshipSelect = $('#townshipSelect');
+
+
+        if (!divisionId) {
+            townshipSelect.prop('disabled', true).html('<option value="">Select division first</option>');
+            return;
+        }
+
+        // Show loading
+        townshipSelect.prop('disabled', true).html('<option value="">Loading townships...</option>');
+
+        // Fetch townships
+        fetch(`/townships?divisionId=${divisionId}`)
+            .then(response => response.json())
+            .then(data => {
+                townshipSelect.empty().append('<option value="">Select Township</option>');
+                data.forEach(township => {
+                    townshipSelect.append(new Option(township.name, township.id));
+                });
+                townshipSelect.prop('disabled', false);
+            })
+            .catch(error => {
+                console.error('Error loading townships:', error);
+                townshipSelect.html('<option value="">Error loading townships</option>');
+            });
+
+        // Fetch users based on division only (township not selected yet)
+        fetchUsers();
+    });
+
+    $('#townshipSelect').change(function () {
+        fetchUsers(); // this time townshipId will be selected → controller: /users/townships
+    });
+
+    function fetchUsers() {
+        const divisionId = $('#divisionSelect').val();
+        const townshipId = $('#townshipSelect').val();
+
+        let url;
+        if (townshipId) {
+            url = `/users/townships?townshipId=${townshipId}`;
+        } else if (divisionId) {
+            url = `/users/divisions?divisionId=${divisionId}`;
+        } else {
+            console.log("No division or township selected.");
+            return;
+        }
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch users');
+                return response.json();
+            })
+            .then(users => {
+                const tbody = $('#example tbody');
+                tbody.empty();
+
+                users.forEach((user, index) => {
+                    const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${user.detail}</td>
+                        <td>${user.username}</td>
+                        <td>${user.nrc}</td>
+                        <td>${user.address}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.role || '-'}</td>
+                        <td>${user.dateOfBirth}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-username="${user.username}"
+                                    data-userid="${user.id}"
+                                    onclick="prepareDelete(this)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                    tbody.append(row);
+                });
+
+                // Refresh DataTable if using it
+                $('#example').DataTable().clear().rows.add(tbody.find('tr')).draw();
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+
+
     function exportUserData() {
-        window.location.href='/users/export';
-    }
+window.location.href='/users/export';
+}
 
-    function prepareDelete(button) {
-        const username = button.getAttribute('data-username');
-        const userId =  button.getAttribute('data-userId');
+function prepareDelete(button) {
+const username = button.getAttribute('data-username');
+const userId = button.getAttribute('data-userId');
 
-        document.getElementById("usernameDisplay").innerText = username;
-        document.getElementById('deleteUserId').value = userId;
-    }
+document.getElementById("usernameDisplay").innerText = username;
+document.getElementById('deleteUserId').value = userId;
+}
 
-    function editUser(row) {
-        const userId = row.getAttribute('data-id');
-        const username = row.getAttribute('data-username');
-        const nrc = row.getAttribute('data-nrc');
-        const role = row.getAttribute('data-role');
-        const address = row.getAttribute('data-address');
-        const phone = row.getAttribute('data-phone');
+function editUser(row) {
+const userId = row.getAttribute('data-id');
+const username = row.getAttribute('data-username');
+const nrc = row.getAttribute('data-nrc');
+const role = row.getAttribute('data-role');
+const address = row.getAttribute('data-address');
+const phone = row.getAttribute('data-phone');
 
-        document.getElementById('editUserId').value = userId;
-        document.getElementById('editUsername').value = username;
-        document.getElementById('editNrc').value = nrc;
-        document.getElementById('editRole').value = role;
-        document.getElementById('editAddress').value = address;
-        document.getElementById('editPhone').value = phone;
+document.getElementById('editUserId').value = userId;
+document.getElementById('editUsername').value = username;
+document.getElementById('editNrc').value = nrc;
+document.getElementById('editRole').value = role;
+document.getElementById('editAddress').value = address;
+document.getElementById('editPhone').value = phone;
 
-        const modal = new bootstrap.Modal(document.getElementById('editUserModal'), {
-            backdrop: 'static',
-            keyboard: false,
-        });
-        modal.show();
+const modal = new bootstrap.Modal(document.getElementById('editUserModal'), {
+backdrop: 'static',
+keyboard: false,
+});
+modal.show();
 
-        const closeButton = document.querySelector('#editUserModal .btn-close');
-        closeButton?.addEventListener('click', () => {
-            modal.hide();
-        });
-    }
+const closeButton = document.querySelector('#editUserModal .btn-close');
+closeButton?.addEventListener('click', () => {
+modal.hide();
+});
+}
 
-    function submitEditForm() {
-        const form = document.getElementById('editUserForm');
-        if (form) {
-            const returnToInput = document.createElement('input');
-            returnToInput.type = 'hidden';
-            returnToInput.name = 'returnToUserList';
-            returnToInput.value = 'true';
-            form.appendChild(returnToInput);
+function submitEditForm() {
+const form = document.getElementById('editUserForm');
+if (form) {
+const returnToInput = document.createElement('input');
+returnToInput.type = 'hidden';
+returnToInput.name = 'returnToUserList';
+returnToInput.value = 'true';
+form.appendChild(returnToInput);
 
             const editedUserIdInput = document.createElement('input');
             editedUserIdInput.type = 'hidden';

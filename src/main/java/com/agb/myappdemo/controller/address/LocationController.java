@@ -1,5 +1,6 @@
 package com.agb.myappdemo.controller.address;
 
+import com.agb.myappdemo.dto.DivisionDto;
 import com.agb.myappdemo.dto.TownshipDto;
 import com.agb.myappdemo.dto.UserDto;
 import com.agb.myappdemo.entity.Division;
@@ -11,18 +12,14 @@ import com.agb.myappdemo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:8080")
 public class LocationController {
 
    private final LocationService locationService;
@@ -47,6 +44,17 @@ public class LocationController {
         model.addAttribute("divisions", divisions);
         return "division";
     }
+
+//    @GetMapping("/divisions")
+//    @ResponseBody
+//    public  List<DivisionDto>getDivisionById(@RequestParam("divisionId")Long divisionId){
+//        return locationService.getAllDivisionById(divisionId)
+//                .stream()
+//                .map(d ->  new DivisionDto(d.getId(), d.getName()))
+//                .collect(Collectors.toList());
+//
+//
+//    }
     @ResponseBody
     @GetMapping("/townships")
     public List<TownshipDto> getTownshipsByDivisionId(@RequestParam("divisionId") Long divisionId) {

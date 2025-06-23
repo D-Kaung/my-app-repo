@@ -28,9 +28,9 @@ public class SecurityConfig {
                                 "/member/home/updatePassword",
                                 "/users/export",
                                 "/township",
+                                "/divisions",
                                 "/update/divisionStatus",
                                 "/update/townshipStatus",
-                                "/map",
                                 "/division").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/member/**").hasRole("USER")

@@ -38,12 +38,16 @@ public class LocationService {
          return townshipDao.findTownshipByDivisionId(divisionId, status.ACTIVE);
     }
 
-    public List<User> getAllUserByDivisionId(Long townshipId) {
+    public List<User> getAllUserByDivisionId(Long divisionId) {
+        return userDao.findUserByDivisionId(divisionId);
+    }
+
+    public List<User> getAllUserByTownshipId(Long townshipId) {
         return userDao.findUserByTownshipId(townshipId);
     }
 
-    public List<User> getAllUserByTownshipId(Long divisionId) {
-        return userDao.findUserByDivisionId(divisionId);
+    public List<Division> getAllDivisionById(Long divisionId) {
+        return divisionDao.findDivisionsById(divisionId);
     }
 
     public Division findDivisionId(Long divisionId) {

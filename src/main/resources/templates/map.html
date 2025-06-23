@@ -1,128 +1,110 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Google Maps with Township Info</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Google Maps with Township Info</title>-->
+<!--    <style>-->
+<!--        html, body {-->
+<!--            height: 100%;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            font-family: Arial, sans-serif;-->
+<!--        }-->
 
-        #map {
-            height: calc(100% - 48px); /* Full height minus header */
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-<div id="map"></div>
+<!--        #map {-->
+<!--            height: calc(100% - 48px); /* Full height minus header */-->
+<!--            width: 100%;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="map"></div>-->
+<!--<div class="form-group row" style="padding: 10px;">-->
+<!--    <div class="col">-->
+<!--        <label for="latitude" class="form-label">Latitude</label>-->
+<!--        <input type="text" class="form-control" id="latitude" required>-->
+<!--    </div>-->
+<!--    <div class="col">-->
+<!--        <label for="longitude" class="form-label">Longitude</label>-->
+<!--        <input type="text" class="form-control" id="longitude" required>-->
+<!--    </div>-->
+<!--</div>-->
 
-<script>
-    (g => {
-        var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",
-            m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}),
-            r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => {
-                await (a = m.createElement("script"));
-                e.set("libraries", [...r] + "");
-                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
-                e.set("callback", c + ".maps." + q);
-                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
-                d[q] = f;
-                a.onerror = () => h = n(Error(p + " could not load."));
-                a.nonce = m.querySelector("script[nonce]")?.nonce || "";
-                m.head.append(a)
-            }));
-        d[l] ? console.warn(p + " only loads once. Ignoring:", g) :
-            d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
-    })({ key: "AIzaSyBN93kkmCC5LXfQZ-lHndlxO5lOSgRZu_8", v: "weekly" }); // replace with your API key
-</script>
+<!--<script>-->
+<!--    (g => {-->
+<!--        var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",-->
+<!--            m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}),-->
+<!--            r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => {-->
+<!--                await (a = m.createElement("script"));-->
+<!--                e.set("libraries", [...r] + "");-->
+<!--                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);-->
+<!--                e.set("callback", c + ".maps." + q);-->
+<!--                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;-->
+<!--                d[q] = f;-->
+<!--                a.onerror = () => h = n(Error(p + " could not load."));-->
+<!--                a.nonce = m.querySelector("script[nonce]")?.nonce || "";-->
+<!--                m.head.append(a)-->
+<!--            }));-->
+<!--        d[l] ? console.warn(p + " only loads once. Ignoring:", g) :-->
+<!--            d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))-->
+<!--    })({ key: "AIzaSyBN93kkmCC5LXfQZ-lHndlxO5lOSgRZu_8", v: "weekly" }); // replace with your API key-->
 
-<script>
-    let map;
 
-    async function initMap() {
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { InfoWindow } = await google.maps.importLibrary("maps");
+<!--let map, marker;-->
 
-        // Township markers
-        const townships = [
-            {
-                name: "Hlaing",
-                lat: 16.84556457830302,
-                lng: 96.1216427973765
-            },
-            {
-                name: "Sule",
-                lat: 16.77511582952278,
-                lng:  96.15890711096415
-            },
-            {
-                name: "Thamine",
-                lat: 16.863423924769688,
-                lng: 96.12155740169175
-            },
-            {
-                name: "Sanchaung",
-                lat: 16.80642563559068,
-                lng: 96.13412168132547
-            },
-            {
-                name: "SouthDagon",
-                lat: 16.85773309381519,
-                lng:  96.24046343544438
-            },
-            {
-                name: "Kamayaut",
-                lat: 16.82868412234077,
-                lng: 96.1303722602962
-            },
-            {
-                name: "Yankin",
-                lat: 16.833212077863898,
-                lng:  96.1662783289023
-            },
-            {
-                name: "Insein",
-                lat: 16.908221288148223,
-                lng: 96.09770689702606
-            }
-        ];
+<!--async function initMap() {-->
+<!--const { Map } = await google.maps.importLibrary("maps");-->
+<!--const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");-->
 
-        // Initialize map centered at first township
-        map = new Map(document.getElementById("map"), {
-            zoom: 5,
-            center: { lat: townships[0].lat, lng: townships[0].lng },
-            mapId: "DEMO_MAP_ID",
-        });
+<!--// Default center (you can pick any starting point)-->
+<!--const defaultPosition = { lat: 16.84556457830302, lng: 96.1216427973765 };-->
 
-        // Add markers with info windows
-        townships.forEach((township) => {
-            const marker = new AdvancedMarkerElement({
-                map: map,
-                position: { lat: township.lat, lng: township.lng },
-                title: township.name
-            });
+<!--map = new Map(document.getElementById("map"), {-->
+<!--zoom: 12,-->
+<!--center: defaultPosition,-->
+<!--mapId: "DEMO_MAP_ID",-->
+<!--});-->
 
-            const infoWindow = new InfoWindow({
-                content: `
-                    <div>
-                        <strong>${township.name}</strong><br>
-                        Latitude: ${township.lat}<br>
-                        Longitude: ${township.lng}
-                    </div>
-                `
-            });
+<!--// Create a draggable marker initially at default position-->
+<!--marker = new AdvancedMarkerElement({-->
+<!--position: defaultPosition,-->
+<!--map: map,-->
+<!--draggable: true,-->
+<!--title: "Drag me or click on the map",-->
+<!--});-->
 
-            marker.addListener("click", () => {
-                infoWindow.open(map, marker);
-            });
-        });
-    }
+<!--// When marker dragged, update input fields-->
+<!--marker.addListener("position_changed", () => {-->
+<!--const pos = marker.position;-->
+<!--document.getElementById("latitude").value = pos.lat();-->
+<!--document.getElementById("longitude").value = pos.lng();-->
+<!--});-->
 
-    initMap();
-</script>
-</body>
-</html>
+<!--// When map is clicked, move marker and update inputs-->
+<!--map.addListener("click", (event) => {-->
+<!--const clickedLocation = event.latLng;-->
+<!--marker.position = clickedLocation;-->
+<!--document.getElementById("latitude").value = clickedLocation.lat();-->
+<!--document.getElementById("longitude").value = clickedLocation.lng();-->
+<!--});-->
+
+<!--// When user types in the input fields, move the marker accordingly-->
+<!--document.getElementById("latitude").addEventListener("change", updateMarkerPositionFromInputs);-->
+<!--document.getElementById("longitude").addEventListener("change", updateMarkerPositionFromInputs);-->
+<!--}-->
+
+<!--function updateMarkerPositionFromInputs() {-->
+<!--const latInput = parseFloat(document.getElementById("latitude").value);-->
+<!--const lngInput = parseFloat(document.getElementById("longitude").value);-->
+
+<!--if (!isNaN(latInput) && !isNaN(lngInput)) {-->
+<!--const newPosition = new google.maps.LatLng(latInput, lngInput);-->
+<!--marker.position = newPosition;-->
+<!--map.panTo(newPosition);-->
+<!--}-->
+<!--}-->
+
+<!--// Initialize the map-->
+<!--initMap();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

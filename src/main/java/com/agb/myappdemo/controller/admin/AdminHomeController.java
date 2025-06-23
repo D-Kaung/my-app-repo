@@ -92,6 +92,7 @@ public class AdminHomeController {
             model.addAttribute("currentPage", pagedUsers.getNumber());
             model.addAttribute("ADMIN", true);
             model.addAttribute("divisions", locationService.getAllDivision());
+
             return "adminPage";
         }
 
