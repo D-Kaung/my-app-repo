@@ -4,6 +4,7 @@ import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.DivisionDao;
 import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,8 +39,10 @@ public class SignUpController {
 
     @PostMapping
     public String processSignUp(@Valid @ModelAttribute("user") User user,
-                                BindingResult result,
+                                BindingResult result, HttpSession session,
                                 Model model) {
+
+        session.setAttribute("userName", user.getUsername());
         if (result.hasErrors()) {
             model.addAttribute("division", divisionDao.findAll());
             return "signUp";

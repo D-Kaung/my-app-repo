@@ -216,6 +216,7 @@ public class AdminHomeController {
         }
         return "redirect:/admin/home";
     }
+
     @GetMapping("/users/export")
     public void exportUsers(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
@@ -232,9 +233,9 @@ public class AdminHomeController {
 
         model.addAttribute("oldPassword", userDetails.getPassword());
 
-        model.addAttribute("error", false);
+        model.addAttribute("error", true);
 
-        model.addAttribute("success", false);
+        model.addAttribute("success", true);
 
 
         User user = userServiceImpl.findByUsername(userDetails.getUsername());

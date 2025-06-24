@@ -31,9 +31,10 @@ public class SecurityConfig {
                                 "/divisions",
                                 "/update/divisionStatus",
                                 "/update/townshipStatus",
+                                "/signIn?error=true",
                                 "/division").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/member/**").hasRole("USER")
+                        .requestMatchers("/member/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

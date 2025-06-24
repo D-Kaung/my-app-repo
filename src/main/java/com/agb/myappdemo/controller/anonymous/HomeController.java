@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class HomeController {
 
-    @GetMapping
-    public String index(Model model, HttpSession session) {
-
-            String userName = (String) session.getAttribute("username");
-            model.addAttribute("userName", userName != null ? userName : "Guest");
-            return "home";
+    @GetMapping("/")
+    public String homePage(HttpSession session, Model model) {
+        String userName = (String) session.getAttribute("userName");
+        if (userName == null) {
+            userName = "Guest";
         }
+        model.addAttribute("userName", userName);
+        return "home"; // home.html
     }
+
+}
 

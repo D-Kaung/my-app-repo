@@ -23,6 +23,7 @@ public class User implements Serializable {
 
 
     @Column(nullable = false)
+    @NotEmpty(message = "Username cannot be empty!")
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -88,6 +89,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
+
     public String getUsername() {
         return username;
     }
@@ -104,7 +106,9 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public @NotEmpty(message = "Phone number cannot be empty!") @Pattern(regexp = "\\d+", message = "Phone number must be only digits!") String getPhone() {
+  @NotEmpty(message = "Phone number cannot be empty!")
+    @Pattern(regexp = "\\d+", message = "Phone number must be only digits!")
+  public String getPhone() {
         return phone;
     }
 
@@ -112,7 +116,8 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public @NotEmpty(message = "NRC cannot be empty!") @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
+    public @NotEmpty(message = "NRC cannot be empty!")
+    @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
             message = "NRC must be in format (e.g., 5/ABC(N)123456)!") String getNrc() {
         return nrc;
     }
