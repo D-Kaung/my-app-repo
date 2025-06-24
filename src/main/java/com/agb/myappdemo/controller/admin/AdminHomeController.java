@@ -148,6 +148,8 @@ public class AdminHomeController {
             @RequestParam(value = "newPhone", required = false) String newPhone,
             @RequestParam(value = "newUsername", required = false) String newUsername,
             @RequestParam(value = "newNrc", required = false) String newNrc,
+            @RequestParam(value = "newLatitude", required = false)double newLatitude,
+            @RequestParam(value = "newLongitude", required = false)double newLongitude,
             @RequestParam(value = "newRole", required = false) Role newRole,
             @RequestParam(value = "returnToUserList", required = false) String returnToUserList,
             @RequestParam(value = "editedUserId", required = false) String editedUserId,
@@ -160,7 +162,8 @@ public class AdminHomeController {
         redirectAttributes.addFlashAttribute("currentNrc", newNrc);
         redirectAttributes.addFlashAttribute("currentRole", newRole);
         redirectAttributes.addFlashAttribute("currentAddress", newAddress);
-
+        redirectAttributes.addFlashAttribute("currentLatitude", newLatitude);
+        redirectAttributes.addFlashAttribute("currentLongitude", newLongitude);
         // Find the user
         User user = userService.findUserById(userId);
         if (user == null) {
@@ -193,6 +196,9 @@ public class AdminHomeController {
         if (newPhone != null) user.setPhone(newPhone);
         if (newRole != null) user.setRole(newRole);
         if (newAddress != null) user.setAddress(newAddress);
+        user.setLatitude(newLatitude);
+        user.setLongitude(newLongitude);
+
 
         try {
             userService.saveUser(user);

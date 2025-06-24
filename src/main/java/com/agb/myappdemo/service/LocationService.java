@@ -46,9 +46,9 @@ public class LocationService {
         return userDao.findUserByTownshipId(townshipId);
     }
 
-    public List<Division> getAllDivisionById(Long divisionId) {
-        return divisionDao.findDivisionsById(divisionId);
-    }
+//    public List<Division> getAllDivisionById(Long divisionId) {
+//        return divisionDao.findDivisionsById(divisionId);
+//    }
 
     public Division findDivisionId(Long divisionId) {
         return divisionDao.findById(divisionId).orElse(null);

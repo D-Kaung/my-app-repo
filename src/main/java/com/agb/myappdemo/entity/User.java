@@ -44,6 +44,10 @@ public class User implements Serializable {
 
     private String address;
 
+    private double latitude;
+
+    private double longitude;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -56,13 +60,17 @@ public class User implements Serializable {
     private Township township;
 
     public User(String username, String password, String phone, String nrc,
-                LocalDate dateOfBirth, String address, Role role, Division division, Township township) {
+                LocalDate dateOfBirth, String address,
+                double latitude, double longitude,
+                Role role, Division division, Township township) {
         this.username = username;
         this.password = password;
         this.phone = phone;
         this.nrc = nrc;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.role = role;
         this.division = division;
         this.township = township;
@@ -128,6 +136,22 @@ public class User implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public Role getRole() {

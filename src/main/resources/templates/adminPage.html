@@ -412,7 +412,7 @@
 </div>
 
 <div class="modal fade" id="editUserModal" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header text-bg-success">
                 <h5 class="modal-title">Edit User</h5>
@@ -422,39 +422,68 @@
                 <form id="editUserForm" th:action="@{/updateUser}" method="post">
                     <input type="hidden" name="_method" value="patch">
                     <input type="hidden" id="editUserId" name="userId">
-                    <div class="mb-3">
-                        <label for="editUsername" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="editUsername"
-                               name="newUsername"
-                               th:value="${currentUsername ?: user?.username}"
-                               placeholder="Enter your Username..">
-                        <div th:if="${usernameError}" class="text-danger" th:text="${usernameError}"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editNrc" class="form-label">NRC</label>
-                        <input type="text" class="form-control" id="editNrc" name="newNrc"
-                               th:value="${currentNrc  ?: user?.nrc}"
-                               placeholder="Enter your NRC..">
-                        <div th:if="${nrcError}" class="text-danger" th:text="${nrcError}"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editRole" class="form-label">Role</label>
-                        <select class="form-select" id="editRole" name="newRole">
-                            <option value="ADMIN">Admin</option>
-                            <option value="USER">User</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPhone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="editPhone" name="newPhone"
-                               th:value="${currentPhone ?: user?.phone}"
-                               placeholder="Enter your Phone..">
-                        <div th:if="${phoneError}" class="text-danger" th:text="${phoneError}"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAddress" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="editAddress" name="newAddress"
-                               placeholder="Enter your address..">
+
+                    <div class="row">
+                        <!-- Column 1 -->
+                        <div class="col-md-6">
+                            <h5>User's Information</h5>
+                            <div class="mb-3">
+                                <label for="editUsername" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="editUsername"
+                                       name="newUsername"
+                                       th:value="${currentUsername ?: user?.username}"
+                                       placeholder="Enter your Username..">
+                                <div th:if="${usernameError}" class="text-danger" th:text="${usernameError}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editRole" class="form-label">Role</label>
+                                <select class="form-select" id="editRole" name="newRole">
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="USER">User</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editPhone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="editPhone" name="newPhone"
+                                       th:value="${currentPhone ?: user?.phone}"
+                                       placeholder="Enter your Phone..">
+                                <div th:if="${phoneError}" class="text-danger" th:text="${phoneError}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editNrc" class="form-label">NRC</label>
+                                <input type="text" class="form-control" id="editNrc" name="newNrc"
+                                       th:value="${currentNrc  ?: user?.nrc}"
+                                       placeholder="Enter your NRC..">
+                                <div th:if="${nrcError}" class="text-danger" th:text="${nrcError}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="col-md-6">
+                            <h5>User's Location</h5>
+                            <div class="mb-3">
+                                <label for="editAddress" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="editAddress" name="newAddress"
+                                       placeholder="Enter your address..">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editLatitude" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" id="editLatitude" name="newLatitude"
+                                       th:value="${currentLatitude ?: user?.latitude}"
+                                       placeholder="Enter your latitude..">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editLongitude" class="form-label">Longitude</label>
+                                <input type="text" class="form-control" id="editLongitude" name="newLongitude"
+                                       th:value="${currentLongitude ?: user?.longitude}"
+                                       placeholder="Enter your longitude...">
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -464,6 +493,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
@@ -540,6 +570,8 @@
                 th:data-username="${user.username}"
                 th:data-nrc="${user.nrc}"
                 th:data-address="${user.address}"
+                th:data-latitude="${user.latitude}"
+                th:data-longitude="${user.longitude}"
                 th:data-phone="${user.phone}"
                 th:data-role="${user.role}"
                 th:data-dateOfBirth="${user.dateOfBirth}">
@@ -781,6 +813,8 @@ const username = row.getAttribute('data-username');
 const nrc = row.getAttribute('data-nrc');
 const role = row.getAttribute('data-role');
 const address = row.getAttribute('data-address');
+const latitude = row.getAttribute('data-latitude');
+const longitude = row.getAttribute('data-longitude');
 const phone = row.getAttribute('data-phone');
 
 document.getElementById('editUserId').value = userId;
@@ -788,6 +822,8 @@ document.getElementById('editUsername').value = username;
 document.getElementById('editNrc').value = nrc;
 document.getElementById('editRole').value = role;
 document.getElementById('editAddress').value = address;
+document.getElementById('editLatitude').value = latitude;
+document.getElementById('editLongitude').value = longitude;
 document.getElementById('editPhone').value = phone;
 
 const modal = new bootstrap.Modal(document.getElementById('editUserModal'), {
