@@ -236,9 +236,8 @@
             <p class="form-subtitle">Enter your credentials to continue</p>
         </div>
 
-        <!-- Error Message -->
-        <div th:if="${loginError}" class="alert alert-error">
-            <i class="fas fa-exclamation-circle"></i> [[${loginError}]]
+        <div th:if="${param.error}" class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i> Invalid username or password.
         </div>
 
         <!-- Success Message -->
@@ -250,15 +249,13 @@
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" id="username" name="username"
-                       class="form-control" placeholder="Enter your username" required
-                       th:classappend="${loginError} ? 'error-border' : ''">
+                       class="form-control" placeholder="Enter your username" required>
             </div>
 
             <div class="form-group">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" id="password" name="password"
-                       class="form-control" placeholder="Enter your password" required
-                       th:classappend="${loginError} ? 'error-border' : ''">
+                       class="form-control" placeholder="Enter your password" required>
             </div>
 
             <button type="submit" class="btn">

@@ -306,12 +306,22 @@
                 <li>
                     <a href="#" class="nav-link" onclick="showUserProfile()">Profile <i class="bi bi-person-fill"></i></a>
                 </li>
-                <li>
-                    <a class="nav-link" href="#" onclick="showUsersDetails()">UserList <i class="bi bi-people-fill"></i></a>
+<!--                Using Drop down-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        User Management <i class="bi bi-people-fill"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="showUsersDetails()">UserList <i class="bi bi-people-fill"></i></a>
+                        </li>
+                        <li th:if="${session.username == null}">
+                            <a class="dropdown-item" href="/signUp">CreateUser <i class="bi bi-person-fill-add"></i></a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item" th:if="${session.username == null}">
-                    <a class="nav-link" href="/signUp">CreateUser <i class="bi bi-person-plus-fill"></i></a>
-                </li>
+
                 <li class="nav-item">
                     <form action="/signOut" method="get">
                         <button type="submit" class="btn btn-outline-danger">Sign Out</button>
@@ -521,7 +531,6 @@
     </div>
 </div>
 
-
 <div th:if="${ADMIN}" class="container" id="usersDetails">
     <div class="form-container">
         <h2 class="text-start mb-4">Registered Users<i class="bi bi-people-fill"></i></h2>
@@ -697,14 +706,7 @@
         return true;
     });
 
-    // Initialize modals properly
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize all Bootstrap modals
-        var modals = document.querySelectorAll('.modal');
-        modals.forEach(function (modal) {
-            new bootstrap.Modal(modal);
-        });
-    });
+
 
     $('#divisionSelect').change(function () {
         const divisionId = $(this).val();
@@ -766,26 +768,44 @@
                 tbody.empty();
 
                 users.forEach((user, index) => {
+
                     const row = `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${user.detail}</td>
-                        <td>${user.username}</td>
-                        <td>${user.nrc}</td>
-                        <td>${user.address}</td>
-                        <td>${user.phone}</td>
-                        <td>${user.role || '-'}</td>
-                        <td>${user.dateOfBirth}</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    data-username="${user.username}"
-                                    data-userid="${user.id}"
-                                    onclick="prepareDelete(this)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+
+                     <tr class="user-row"
+                         data-id="${user.id}"
+                         data-username="${user.username}"
+                         data-nrc="${user.nrc}"
+                         data-role="${user.role || 'ADMIN'}"
+                         data-address="${user.address}"
+                         data-latitude="${user.latitude || ''}"
+                         data-longitude="${user.longitude || ''}"
+                         data-phone="${user.phone}">
+
+                         <td>${index + 1}</td>
+                         <td><button class="expand-row" style="cursor:pointer;">»</button></td>
+                         <td>${user.username}</td>
+                          <td>${user.nrc}</td>
+                           <td>${user.address}</td>
+                           <td>${user.phone}</td>
+                           <td>${user.role || 'ADMIN'}</td>
+                          <td>${user.dateOfBirth}</td>
+                          <td>
+
+                           <button
+                              class="btn btn-danger btn-sm bi bi-trash"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal"
+                              data-username="${user.username}"
+                              data-userid="${user.id}"
+                              onclick="prepareDelete(this)">
+                          Delete
+                        </button>
+
+                  </td>
+</tr>
                 `;
+
+
                     tbody.append(row);
                 });
 
@@ -797,9 +817,8 @@
             });
     }
 
-
     function exportUserData() {
-window.location.href='/users/export';
+      window.location.href='/users/export';
 }
 
 function prepareDelete(button) {

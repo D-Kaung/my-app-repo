@@ -1,6 +1,7 @@
 package com.agb.myappdemo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -23,10 +24,11 @@ public class User implements Serializable {
 
 
     @Column(nullable = false)
-    @NotEmpty(message = "Username cannot be empty!")
+    @NotBlank(message = "Please enter username.")
     private String username;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Please enter password.")
     private String password;
 
     @Column(unique = true, nullable = false)

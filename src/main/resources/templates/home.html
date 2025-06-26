@@ -8,7 +8,7 @@
 
     <style>
         body {
-            background-color: #0a53be;
+            background-color: #e9f0ff;
         }
 
         .h1 {
@@ -50,7 +50,7 @@
         }
 
         .greeting-text {
-            color: #ffca2c;
+            color: #212529;
             font-size: 2rem;
             margin-top: 50px;
         }
@@ -82,12 +82,12 @@
 
 
 <h1 class="h1 greeting-text">
-    Hello <span th:text="${session.userName} ?: 'Guest'"></span>
+    Hello <span th:text="${session.userName} ?: 'Guest'"></span><i class="bi bi-person-arms-up"></i>
 </h1>
 
 
 <div class="container text-center">
-    <p class="text-light">Welcome to MyApp! Enjoy your stay.</p>
+    <p class="text-dark">Welcome to MyApp! Enjoy your stay.</p>
 </div>
 
 

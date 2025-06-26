@@ -13,7 +13,8 @@
             padding-top: 40px;
         }
         .signup-container {
-            max-width: 550px;
+            max-width: 70%;
+            max-height: 70%;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -49,15 +50,25 @@
             color: #666;
             font-size: 0.95rem;
         }
-
         .form-footer a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
         }
-
         .form-footer a:hover {
             text-decoration: underline;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        legend {
+            width: auto;
+            padding: 0 10px;
+            font-size: 1.1rem;
+            color: #495057;
         }
     </style>
 </head>
@@ -70,97 +81,102 @@
 
         <form th:action="@{/signUp}" th:object="${user}" method="post">
             <div class="row">
-                <!-- Left Side -->
+                <!-- Left Side - Account Information -->
                 <div class="col-md-6">
-                    <h5 class="mb-3">Account Information</h5>
+                    <fieldset>
+                        <legend>Account Information</legend>
 
-                    <!-- Username -->
-                    <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" th:field="*{username}"
-                               placeholder="Enter your username" required>
-                        <div th:if="${#fields.hasErrors('username')}" class="error-message"
-                             th:errors="*{username}"></div>
-                    </div>
+                        <!-- Username -->
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" th:field="*{username}"
+                                   placeholder="Enter your username" required>
+                            <div th:if="${#fields.hasErrors('username')}" class="error-message"
+                                 th:errors="*{username}">Username is require!</div>
 
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" th:field="*{password}"
-                               placeholder="Enter your password" required>
-                        <div th:if="${#fields.hasErrors('password')}" class="error-message"
-                             th:errors="*{password}"></div>
-                    </div>
+                        </div>
 
-                    <!-- Phone -->
-                    <div class="form-group">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" th:field="*{phone}"
-                               placeholder="Enter your phone number" required>
-                        <div th:if="${#fields.hasErrors('phone')}" class="error-message"
-                             th:errors="*{phone}"></div>
-                    </div>
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}"
+                                   placeholder="Enter your password" required>
+                            <div th:if="${#fields.hasErrors('password')}" class="error-message"
+                                 th:errors="*{password}">Password is require!</div>
+                        </div>
 
-                    <!-- NRC -->
-                    <div class="form-group">
-                        <label for="nrc" class="form-label">NRC Number</label>
-                        <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
-                               placeholder="Format: 12/ABC(N)123456" required>
-                        <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
-                             th:errors="*{nrc}"></div>
-                    </div>
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                                   placeholder="Enter your phone number" required>
+                            <div th:if="${#fields.hasErrors('phone')}" class="error-message"
+                                 th:errors="*{phone}">Phone number is required!</div>
+                        </div>
+
+                        <!-- NRC -->
+                        <div class="form-group">
+                            <label for="nrc" class="form-label">NRC Number</label>
+                            <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
+                                   placeholder="Format: 12/ABC(N)123456" required>
+                            <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
+                                 th:errors="*{nrc}">Nrc is require!</div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                        </div>
+                    </fieldset>
                 </div>
 
-                <!-- Right Side -->
+                <!-- Right Side - Location & Personal Info -->
                 <div class="col-md-6">
-                    <h5 class="mb-3">Location & Personal Info</h5>
+                    <fieldset>
+                        <legend>Personal & Location Information</legend>
 
-                    <!-- Date of Birth -->
-                    <div class="form-group">
-                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
-                    </div>
-
-                    <!-- Division -->
-                    <div class="form-group">
-                        <label for="division" class="form-label">Division</label>
-                        <select class="form-control" id="division" th:field="*{division.id}" required>
-                            <option value="">Select Division</option>
-                            <option th:each="division : ${divisions}"
-                                    th:value="${division.id}"
-                                    th:text="${division.name}"></option>
-                        </select>
-                    </div>
-
-                    <!-- Township -->
-                    <div class="form-group">
-                        <label for="township" class="form-label">Township</label>
-                        <select class="form-control" id="township" name="township.id" required>
-                            <option value="">Select Division First</option>
-                        </select>
-                        <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
-                        <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
-                    </div>
-
-                    <!-- Address -->
-                    <div class="form-group">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col">
-                            <label for="latitude" class="form-label">Latitude</label>
-                            <input type="text" class="form-control" id="latitude"
-                                   th:field="*{latitude}" required>
+                        <!-- Division -->
+                        <div class="form-group">
+                            <label for="division" class="form-label">Division</label>
+                            <select class="form-control" id="division" th:field="*{division.id}" required>
+                                <option value="">Select Division</option>
+                                <option th:each="division : ${divisions}"
+                                        th:value="${division.id}"
+                                        th:text="${division.name}"></option>
+                            </select>
                         </div>
-                        <div class="col">
-                            <label for="longitude" class="form-label">Longitude</label>
-                            <input type="text" class="form-control" id="longitude"
-                                   th:field="*{longitude}" required>
+
+                        <!-- Township -->
+                        <div class="form-group">
+                            <label for="township" class="form-label">Township</label>
+                            <select class="form-control" id="township" name="township.id" required>
+                                <option value="">Select Division First</option>
+                            </select>
+                            <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
+                            <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
                         </div>
-                    </div>
-                    <div id="map" ></div>
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" id="latitude"
+                                       th:field="*{latitude}" required>
+                            </div>
+                            <div class="col">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input type="text" class="form-control" id="longitude"
+                                       th:field="*{longitude}" required>
+                            </div>
+                        </div>
+                        <div id="map"></div>
+                    </fieldset>
                 </div>
             </div>
 
@@ -169,7 +185,6 @@
                 <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             </div>
         </form>
-
 
         <div class="text-center mt-3 form-footer">
             <p>Already have an account? <a th:href="@{/signIn}">Sign in here</a></p>
@@ -238,6 +253,7 @@
             divisionSelect.dispatchEvent(new Event("change"));
         }
     });
+
     // Update your date validation to ensure proper format
     document.getElementById("dateOfBirth").addEventListener("change", function () {
         if (!this.value) return;
@@ -257,25 +273,72 @@
             this.value = "";
         }
     });
+    function showError(input, errorId, message) {
+        const errorElement = document.getElementById(errorId);
+        input.classList.add('is-invalid');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
 
-        // Load the Google Maps API asynchronously
-        function loadGoogleMapsApi(callback) {
+    // Helper function to reset all errors
+    function resetErrors() {
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(error => {
+            error.style.display = 'none';
+        });
+
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid');
+        });
+    }
+
+    // Real-time validation for username
+    document.getElementById('username').addEventListener('blur', function() {
+        if (!this.value.trim()) {
+            showError(this, 'username-error', 'Username is required');
+        }
+    });
+
+    // Real-time validation for password
+    document.getElementById('password').addEventListener('blur', function() {
+        if (!this.value.trim()) {
+            showError(this, 'password-error', 'Password is required');
+        }
+    });
+
+    // Real-time validation for phone
+    document.getElementById('phone').addEventListener('blur', function() {
+        if (!this.value.trim()) {
+            showError(this, 'phone-error', 'Phone number is required');
+        }
+    });
+
+    // Real-time validation for NRC
+    document.getElementById('nrc').addEventListener('blur', function() {
+        if (!this.value.trim()) {
+            showError(this, 'nrc-error', 'NRC number is required');
+        }
+    });
+
+    // Load the Google Maps API asynchronously
+    function loadGoogleMapsApi(callback) {
         const existingScript = document.getElementById('googleMaps');
 
         if (!existingScript) {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBN93kkmCC5LXfQZ-lHndlxO5lOSgRZu_8&callback=${callback.name}`;
-        script.id = 'googleMaps';
-        script.async = true;
-        script.defer = true;
-        document.body.appendChild(script);
-    } else {
-        callback();
-    }
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBN93kkmCC5LXfQZ-lHndlxO5lOSgRZu_8&callback=${callback.name}`;
+            script.id = 'googleMaps';
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+        } else {
+            callback();
+        }
     }
 
-        // This function initializes the map and marker and syncs with inputs
-        function initMap() {
+    // This function initializes the map and marker and syncs with inputs
+    function initMap() {
         const latInput = document.getElementById('latitude');
         const lngInput = document.getElementById('longitude');
         const mapDiv = document.getElementById('map');
@@ -284,43 +347,43 @@
         const defaultPosition = {lat: 16.84556457830302, lng: 96.1216427973765};
 
         const map = new google.maps.Map(mapDiv, {
-        center: defaultPosition,
-        zoom: 12,
-    });
+            center: defaultPosition,
+            zoom: 12,
+        });
 
         // Create a draggable marker
         const marker = new google.maps.Marker({
-        position: defaultPosition,
-        map: map,
-        draggable: true,
-        title: "Drag me or click on map",
-    });
+            position: defaultPosition,
+            map: map,
+            draggable: true,
+            title: "Drag me or click on map",
+        });
 
         // When the marker is dragged, update the input fields
         marker.addListener('position_changed', () => {
-        const pos = marker.getPosition();
-        latInput.value = pos.lat().toFixed(6);
-        lngInput.value = pos.lng().toFixed(6);
-    });
+            const pos = marker.getPosition();
+            latInput.value = pos.lat().toFixed(6);
+            lngInput.value = pos.lng().toFixed(6);
+        });
 
         // When the map is clicked, move the marker and update inputs
         map.addListener('click', (event) => {
-        marker.setPosition(event.latLng);
-        latInput.value = event.latLng.lat().toFixed(6);
-        lngInput.value = event.latLng.lng().toFixed(6);
-    });
+            marker.setPosition(event.latLng);
+            latInput.value = event.latLng.lat().toFixed(6);
+            lngInput.value = event.latLng.lng().toFixed(6);
+        });
 
         // When user types in inputs, move the marker accordingly
         function updateMarkerFromInputs() {
-        const lat = parseFloat(latInput.value);
-        const lng = parseFloat(lngInput.value);
+            const lat = parseFloat(latInput.value);
+            const lng = parseFloat(lngInput.value);
 
-        if (!isNaN(lat) && !isNaN(lng)) {
-        const newPos = new google.maps.LatLng(lat, lng);
-        marker.setPosition(newPos);
-        map.panTo(newPos);
-    }
-    }
+            if (!isNaN(lat) && !isNaN(lng)) {
+                const newPos = new google.maps.LatLng(lat, lng);
+                marker.setPosition(newPos);
+                map.panTo(newPos);
+            }
+        }
 
         latInput.addEventListener('change', updateMarkerFromInputs);
         lngInput.addEventListener('change', updateMarkerFromInputs);
@@ -330,11 +393,8 @@
         lngInput.value = defaultPosition.lng.toFixed(6);
     }
 
-        // Load Google Maps API and initialize the map
-        loadGoogleMapsApi(initMap);
+    // Load Google Maps API and initialize the map
+    loadGoogleMapsApi(initMap);
 </script>
-
-
-
 </body>
 </html>
