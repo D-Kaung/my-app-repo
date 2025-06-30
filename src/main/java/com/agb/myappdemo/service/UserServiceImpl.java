@@ -8,9 +8,7 @@ import com.agb.myappdemo.repository.UserDao;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -107,6 +105,10 @@ public class UserServiceImpl implements UserService {
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("DataOfAllUsers");
+        HSSFCellStyle dateCellStyle = workbook.createCellStyle();
+
+        HSSFDataFormat dataFormat = workbook.createDataFormat();
+        dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-mm-dd"));
         HSSFRow row = sheet.createRow(0);
 
         row.createCell(0).setCellValue("Username");
@@ -125,8 +127,10 @@ public class UserServiceImpl implements UserService {
             dataRow.createCell(2).setCellValue(user.getPhone());
             dataRow.createCell(3).setCellValue(user.getAddress());
             dataRow.createCell(4).setCellValue(String.valueOf(user.getRole()));
-            dataRow.createCell(5).setCellValue(user.getDateOfBirth());
 
+            HSSFCell dateCell = dataRow.createCell(5);
+            dateCell.setCellValue(user.getDateOfBirth());
+            dateCell.setCellStyle(dateCellStyle);
             dataRowIndex ++;
         }
 
