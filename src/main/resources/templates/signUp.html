@@ -138,7 +138,7 @@
                     <div class="form-group">
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="phone" th:field="*{phone}"
-                               placeholder="Enter your phone number" required>
+                               placeholder="Enter your phone number" >
                         <div th:if="${#fields.hasErrors('phone')}" class="error-message"
                              th:errors="*{phone}">Phone number is required!</div>
                     </div>
@@ -147,7 +147,7 @@
                     <div class="form-group">
                         <label for="nrc" class="form-label">NRC Number</label>
                         <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
-                               placeholder="Format: 12/ABC(N)123456" required>
+                               placeholder="Format: 12/ABC(N)123456" >
                         <div class="nrc-format">Example: 12/ABC(N)123456</div>
                         <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
                              th:errors="*{nrc}">NRC is required!</div>

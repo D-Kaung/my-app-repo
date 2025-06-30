@@ -229,27 +229,27 @@ public class AdminHomeController {
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  @RequestParam("oldPassword")String oldPassword,
                                  @RequestParam("newPassword")String newPassword,
-                                 @RequestParam("confirmPassword")String confirmPassword) {
+                                 @RequestParam("confirmPassword")String confirmPassword,
+                                 RedirectAttributes redirectAttributes) {
 
         model.addAttribute("oldPassword", userDetails.getPassword());
 
-        model.addAttribute("error", true);
+        model.addAttribute("error", false);
 
-        model.addAttribute("success", true);
-
+        model.addAttribute("success", false);
 
         User user = userServiceImpl.findByUsername(userDetails.getUsername());
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())){
-            model.addAttribute("error", "Old password does not match");
+           redirectAttributes.addFlashAttribute("error", "Old password does not match");
             return "redirect:/admin/home";
         }
         if (passwordEncoder.matches(newPassword, user.getPassword())){
-            model.addAttribute("error", "New password does not same with the old password");
+           redirectAttributes.addFlashAttribute("error", "New password does not same with the old password");
             return "redirect:/admin/home";
         }
         if (!newPassword.equals(confirmPassword)){
-            model.addAttribute("error", "New password does match");
+          redirectAttributes.addFlashAttribute("error", "New password does match");
             return "redirect:/admin/home";
         }
 
@@ -257,7 +257,7 @@ public class AdminHomeController {
 
         userServiceImpl.saveUser(user);
 
-        model.addAttribute("success", "Finally done update password");
+      redirectAttributes.addFlashAttribute("success", "Finally done update password");
 
         return "redirect:/admin/home";
 

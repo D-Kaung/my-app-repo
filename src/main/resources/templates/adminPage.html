@@ -396,24 +396,27 @@
             </div>
             <form id="passwordForm" th:action="@{/admin/updatePassword}" method="post">
                 <div class="modal-body">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+<!--                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
                     <div class="mb-3">
                         <label for="oldPassword" class="form-label">Current Password:</label>
                         <input type="password" class="form-control" id="oldPassword" name="oldPassword"
-                               placeholder="Enter your old password." required>
-
+                               placeholder="Enter your old password.">
+                        <div th:if="${error != null and error.contains('Old password')}"
+                             class="text-danger" th:text="${error}"></div>
                     </div>
                     <div class="mb-3">
                         <label for="newPassword" class="form-label">New Password:</label>
                         <input type="password" class="form-control" id="newPassword" name="newPassword"
-                               placeholder="Enter your new password." required>
-
+                               placeholder="Enter your new password." >
+                        <div th:if="${error != null and error.contains('cannot be the same')}"
+                             class="text-danger" th:text="${error}"></div>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm New Password:</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                               placeholder="Confirm your new password." required>
-
+                               placeholder="Confirm your new password." >
+                        <div th:if="${error != null and error.contains('does not match')}"
+                             class="text-danger" th:text="${error}"></div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -56,6 +56,7 @@ public class MemberHomeController {
                                      @RequestParam("confirmPassword") String confirmPassword,
                                      RedirectAttributes redirectAttributes) {
 
+
         model.addAttribute("oldPassword",userDetails.getPassword());
 
         model.addAttribute("error",false);

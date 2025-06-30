@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+
+    <!-- Bootstrap 4 & Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,8 +37,6 @@
             margin-top: 50px;
             overflow: hidden;
         }
-
-        /* Profile Icon Section - Blue */
         .profile-icon-section {
             background-color: #3498db;
             padding: 40px 0;
@@ -45,13 +46,6 @@
         .profile-icon {
             margin-bottom: 20px;
         }
-
-        /* User Info Section */
-        .user-info-section {
-            width: 100%;
-        }
-
-        /* Button Styles */
         .btn-update {
             background-color: white;
             color: #2ecc71;
@@ -68,31 +62,16 @@
             background-color: #e8e8e8;
             transform: translateY(-2px);
         }
-        .message {
-            font-weight: bold;
-            margin-top: 15px;
-        }
         .modal-content {
             border-radius: 15px;
         }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .profile-icon-section {
-                padding: 30px 0;
-            }
-            .user-info-section .col-md-8,
-            .user-info-section .col-md-4 {
-                padding: 20px !important;
-            }
-            .btn-update {
-                max-width: 100%;
-            }
+            .btn-update { max-width: 100%; }
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="/">Home <i class="bi bi-house-check-fill"></i></a>
@@ -109,7 +88,7 @@
 
 <!-- Main Container -->
 <div class="container">
-    <!-- Part 1: Profile Icon (Blue Section) -->
+    <!-- Profile Icon -->
     <div class="profile-icon-section">
         <div class="profile-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" viewBox="0 0 16 16">
@@ -120,36 +99,25 @@
         <h3>Profile</h3>
     </div>
 
-    <!-- Part 2: User Details with Update Button -->
+    <!-- User Info and Update Button -->
     <div class="user-info-section">
         <div class="row no-gutters">
-            <!-- User Information Column -->
             <div class="col-md-8" style="background-color: #f8f9fa; padding: 30px;">
                 <h4>User Information <i class="bi bi-justify-left"></i></h4>
-                <div class="profile-details">
-                    <p><strong>Username:</strong> <span th:text="${username}"></span></p>
-                    <p><strong>Role:</strong> <span th:text="${userRole}"></span></p>
-                </div>
+                <p><strong>Username:</strong> <span th:text="${username}"></span></p>
+                <p><strong>Role:</strong> <span th:text="${userRole}"></span></p>
             </div>
-
-            <!-- Update Button Column -->
-            <div class="col-md-4" style="padding: 50px; display:
-             flex; align-items: center; justify-content: center;">
+            <div class="col-md-4" style="padding: 50px; display: flex; align-items: center; justify-content: center;">
                 <button class="btn btn-success" data-toggle="modal" data-target="#passwordModal">
                     <i class="fas fa-key"></i> Update Password
                 </button>
             </div>
         </div>
     </div>
-
-    <!-- Messages -->
-<!--    <div th:if="${success}" class="alert alert-success message" th:text="${success}"></div>-->
-<!--    <div th:if="${error}" class="alert alert-danger message" th:text="${error}"></div>-->
 </div>
 
-<!-- Password Update Modal -->
-<!-- Password Update Modal -->
-<div class="modal fade" id="passwordModal" tabindex="-1" data-bs-backdrop="static"
+<!-- Password Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1" data-backdrop="static"
      role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -163,45 +131,25 @@
 
             <div class="modal-body">
                 <form th:action="@{/updatePassword}" method="post">
-
-                    <!-- Old Password -->
                     <div class="form-group">
                         <label for="oldPassword">Current Password:</label>
-                        <input type="password" name="oldPassword" class="form-control"
-                               placeholder="Enter your old password.">
-
-                        <!-- Show error message for old password mismatch -->
-                        <div th:if="${error != null and error.contains('Old password')}"
-                             class="text-danger" th:text="${error}"></div>
+                        <input type="password" name="oldPassword" class="form-control" placeholder="Enter your old password.">
+                        <div th:if="${error != null and error.contains('Old password')}" class="text-danger" th:text="${error}"></div>
                     </div>
-
-                    <!-- New Password -->
                     <div class="form-group">
                         <label for="newPassword">New Password:</label>
-                        <input type="password" name="newPassword" class="form-control"
-                               placeholder="Enter your new password.">
-
-                        <!-- Show error message if new password is same as old -->
-                        <div th:if="${error != null and error.contains('cannot be the same')}"
-                             class="text-danger" th:text="${error}"></div>
+                        <input type="password" name="newPassword" class="form-control" placeholder="Enter your new password.">
+                        <div th:if="${error != null and error.contains('same with the old password')}" class="text-danger" th:text="${error}"></div>
                     </div>
-
-                    <!-- Confirm Password -->
                     <div class="form-group">
                         <label for="confirmPassword">Confirm New Password:</label>
-                        <input type="password" name="confirmPassword" class="form-control"
-                               placeholder="Confirm your new password.">
-
-                        <!-- Show error message if new & confirm don't match -->
-                        <div th:if="${error != null and error.contains('does not match')}"
-                             class="text-danger" th:text="${error}"></div>
+                        <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm your new password.">
+                        <div th:if="${error != null and error.contains('does match')}" class="text-danger" th:text="${error}"></div>
                     </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">Update Password</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Update Password</button>
+                    </div>
                 </form>
             </div>
 
@@ -210,7 +158,7 @@
 </div>
 
 
-<!-- Bootstrap JS and dependencies -->
+<!-- JS Dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
