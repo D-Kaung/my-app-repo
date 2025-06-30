@@ -22,13 +22,12 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(nullable = false)
-    @NotBlank(message = "Please enter username.")
+    @NotBlank(message = "Username cannot be empty!! Pls enter your username.")
     private String username;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Please enter password.")
+    @NotBlank(message = "Please enter password.Password cannot be empty!")
     private String password;
 
     @Column(unique = true, nullable = false)

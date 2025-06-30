@@ -12,14 +12,16 @@
             background-color: #f8f9fa;
             padding-top: 40px;
         }
-        .signup-container {
-            max-width: 70%;
-            max-height: 70%;
+        .main-container {
+            max-width: 1200px;
             margin: 0 auto;
+        }
+        .form-container {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
         .form-title {
             text-align: center;
@@ -39,19 +41,19 @@
             font-size: 0.875rem;
         }
         #map {
-            width: 100%;        /* Or a fixed width like 600px */
-            height: 400px;      /* Or any height you want */
-            border-radius: 8px; /* Optional styling */
-            margin-top: 10px;   /* Optional spacing */
+            width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            margin-top: 10px;
         }
         .form-footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
             color: #666;
             font-size: 0.95rem;
         }
         .form-footer a {
-            color: var(--primary-color);
+            color: #0d6efd;
             text-decoration: none;
             font-weight: 600;
         }
@@ -59,136 +61,167 @@
             text-decoration: underline;
         }
         fieldset {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            height: 100%;
         }
         legend {
             width: auto;
-            padding: 0 10px;
+            padding: 0 15px;
             font-size: 1.1rem;
             color: #495057;
+            font-weight: 500;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+        }
+        .submit-container {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            min-width: 200px;
+        }
+        .side-by-side {
+            display: flex;
+            gap: 25px;
+        }
+        .side-by-side > div {
+            flex: 1;
+        }
+        @media (max-width: 992px) {
+            .side-by-side {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="signup-container">
-        <h2 class="form-title">Create Your Account</h2>
+<div class="container main-container">
+    <h2 class="form-title">Create Your Account</h2>
 
-        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-        <form th:action="@{/signUp}" th:object="${user}" method="post">
-            <div class="row">
-                <!-- Left Side - Account Information -->
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Account Information</legend>
+    <form th:action="@{/signUp}" th:object="${user}" method="post">
+        <div class="side-by-side">
+            <!-- Left Container - Account Information -->
+            <div class="form-container">
+                <fieldset>
+                    <legend>Account Information</legend>
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" th:field="*{username}" class="form-control"
+                               placeholder="Enter your username" />
 
-                        <!-- Username -->
-                        <div class="form-group">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" th:field="*{username}"
-                                   placeholder="Enter your username" required>
-                            <div th:if="${#fields.hasErrors('username')}" class="error-message"
-                                 th:errors="*{username}">Username is require!</div>
+                        <!-- This will show your @NotBlank custom error message -->
+                        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                             class="text-danger"></div>
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" >Password</label>
+                        <input type="password" class="form-control" id="password" th:field="*{password}"
+                               placeholder="Enter your password" >
+                        <div th:if="${#fields.hasErrors('password')}" class="text-danger"
+                             th:errors="*{password}">
 
                         </div>
+                    </div>
 
-                        <!-- Password -->
-                        <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" th:field="*{password}"
-                                   placeholder="Enter your password" required>
-                            <div th:if="${#fields.hasErrors('password')}" class="error-message"
-                                 th:errors="*{password}">Password is require!</div>
-                        </div>
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                               placeholder="Enter your phone number" required>
+                        <div th:if="${#fields.hasErrors('phone')}" class="error-message"
+                             th:errors="*{phone}">Phone number is required!</div>
+                    </div>
 
-                        <!-- Phone -->
-                        <div class="form-group">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" th:field="*{phone}"
-                                   placeholder="Enter your phone number" required>
-                            <div th:if="${#fields.hasErrors('phone')}" class="error-message"
-                                 th:errors="*{phone}">Phone number is required!</div>
-                        </div>
+                    <!-- NRC -->
+                    <div class="form-group">
+                        <label for="nrc" class="form-label">NRC Number</label>
+                        <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
+                               placeholder="Format: 12/ABC(N)123456" required>
+                        <div class="nrc-format">Example: 12/ABC(N)123456</div>
+                        <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
+                             th:errors="*{nrc}">NRC is required!</div>
+                    </div>
 
-                        <!-- NRC -->
-                        <div class="form-group">
-                            <label for="nrc" class="form-label">NRC Number</label>
-                            <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
-                                   placeholder="Format: 12/ABC(N)123456" required>
-                            <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
-                                 th:errors="*{nrc}">Nrc is require!</div>
-                        </div>
+                    <!-- Date of Birth -->
+                    <div class="form-group">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                    </div>
+                </fieldset>
+            </div>
 
-                        <!-- Date of Birth -->
-                        <div class="form-group">
-                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
-                        </div>
-                    </fieldset>
-                </div>
+            <!-- Right Container - Location Information -->
+            <div class="form-container">
+                <fieldset>
+                    <legend>Location Information</legend>
+                    <!-- Division -->
+                    <div class="form-group">
+                        <label for="division" class="form-label">Division</label>
+                        <select class="form-control" id="division" th:field="*{division.id}" required>
+                            <option value="">Select Division</option>
+                            <option th:each="division : ${divisions}"
+                                    th:value="${division.id}"
+                                    th:text="${division.name}"></option>
+                        </select>
+                    </div>
 
-                <!-- Right Side - Location & Personal Info -->
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Personal & Location Information</legend>
+                    <!-- Township -->
+                    <div class="form-group">
+                        <label for="township" class="form-label">Township</label>
+                        <select class="form-control" id="township" name="township.id" required>
+                            <option value="">Select Division First</option>
+                        </select>
+                        <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
+                        <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
+                    </div>
 
-                        <!-- Division -->
-                        <div class="form-group">
-                            <label for="division" class="form-label">Division</label>
-                            <select class="form-control" id="division" th:field="*{division.id}" required>
-                                <option value="">Select Division</option>
-                                <option th:each="division : ${divisions}"
-                                        th:value="${division.id}"
-                                        th:text="${division.name}"></option>
-                            </select>
-                        </div>
 
-                        <!-- Township -->
-                        <div class="form-group">
-                            <label for="township" class="form-label">Township</label>
-                            <select class="form-control" id="township" name="township.id" required>
-                                <option value="">Select Division First</option>
-                            </select>
-                            <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
-                            <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
-                        </div>
+                    <!-- Address -->
+                    <div class="form-group">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" th:field="*{address}" rows="2"></textarea>
+                    </div>
 
-                        <!-- Address -->
-                        <div class="form-group">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="latitude" class="form-label">Latitude</label>
                                 <input type="text" class="form-control" id="latitude"
                                        th:field="*{latitude}" required>
                             </div>
-                            <div class="col">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="longitude" class="form-label">Longitude</label>
                                 <input type="text" class="form-control" id="longitude"
                                        th:field="*{longitude}" required>
                             </div>
                         </div>
-                        <div id="map"></div>
-                    </fieldset>
-                </div>
+                    </div>
+                    <div id="map"></div>
+                </fieldset>
             </div>
-
-            <!-- Submit Button -->
-            <div class="form-group mt-4">
-                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-            </div>
-        </form>
-
-        <div class="text-center mt-3 form-footer">
-            <p>Already have an account? <a th:href="@{/signIn}">Sign in here</a></p>
         </div>
+
+        <!-- Submit Button -->
+        <div class="submit-container">
+            <button type="submit" class="btn btn-primary submit-btn">Sign Up</button>
+        </div>
+    </form>
+
+    <div class="form-footer">
+        <p>Already have an account? <a th:href="@{/signIn}">Sign in here</a></p>
     </div>
 </div>
 

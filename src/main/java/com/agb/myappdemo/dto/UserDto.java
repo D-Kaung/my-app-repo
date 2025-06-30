@@ -1,5 +1,7 @@
 package com.agb.myappdemo.dto;
 
+import com.agb.myappdemo.entity.Role;
+
 import java.time.LocalDate;
 
 public class UserDto {
@@ -10,15 +12,46 @@ public class UserDto {
     private String nrc;
     private String address;
     private LocalDate dateOfBirth;
+    private Role role;
+    private double latitude;
+    private double longitude;
 
-    public UserDto(int id, String username, String phone, String nrc, String address, LocalDate dateOfBirth) {
+    public UserDto(int id, String username, String phone, String nrc, String address, LocalDate dateOfBirth,
+                   Role role, double latitude, double longitude) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.nrc = nrc;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
+        this.role = role;
+        this.latitude = latitude;
+        this.longitude = longitude;
 
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public int getId() {

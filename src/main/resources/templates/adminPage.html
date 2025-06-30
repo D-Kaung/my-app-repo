@@ -630,6 +630,7 @@
       const table = $('#example').DataTable({
             "searching": true,
             "pageLength": 5,
+            "ordering": false,
             "lengthMenu": [5,10,25,50,75],
             "columnDefs": [
                 {
@@ -778,10 +779,10 @@
                          data-id="${user.id}"
                          data-username="${user.username}"
                          data-nrc="${user.nrc}"
-                         data-role="${user.role || 'ADMIN'}"
+                         data-role="${user.role}"
                          data-address="${user.address}"
-                         data-latitude="${user.latitude || ''}"
-                         data-longitude="${user.longitude || ''}"
+                         data-latitude="${user.latitude}"
+                         data-longitude="${user.longitude}"
                          data-phone="${user.phone}">
 
                          <td>${index + 1}</td>
@@ -790,7 +791,7 @@
                           <td>${user.nrc}</td>
                            <td>${user.address}</td>
                            <td>${user.phone}</td>
-                           <td>${user.role || 'ADMIN'}</td>
+                           <td>${user.role}</td>
                           <td>${user.dateOfBirth}</td>
                           <td>
 

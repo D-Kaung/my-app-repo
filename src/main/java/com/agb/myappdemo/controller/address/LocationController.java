@@ -123,7 +123,7 @@ public class LocationController {
 
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getUsername(), u.getPhone(), u.getNrc()
-                , u.getAddress(), u.getDateOfBirth()))
+                , u.getAddress(), u.getDateOfBirth(), u.getRole(), u.getLatitude(), u.getLongitude()))
                 .collect(Collectors.toList());
     }
 
@@ -135,7 +135,7 @@ public class LocationController {
 
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getUsername(), u.getPhone(), u.getNrc(),
-                        u.getAddress(), u.getDateOfBirth()))
+                        u.getAddress(), u.getDateOfBirth(), u.getRole(), u.getLatitude(), u.getLongitude()))
                 .collect(Collectors.toList());
     }
 

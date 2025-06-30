@@ -33,6 +33,7 @@ public class MemberHomeController {
 
     @GetMapping("/member/home")
     public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+
         model.addAttribute("username", userDetails.getUsername());
 
         // Extract the first role and remove "ROLE_" prefix

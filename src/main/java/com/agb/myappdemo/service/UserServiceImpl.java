@@ -1,5 +1,6 @@
 package com.agb.myappdemo.service;
 
+import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.Township;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.TownshipDao;
@@ -34,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signUpUser(User user) throws Exception {
+
+
         // Validate unique fields
         if (userDao.existsByPhone(user.getPhone())) {
             throw new Exception("This Phone is already exists.");
@@ -50,6 +53,7 @@ public class UserServiceImpl implements UserService {
             user.setDivision(township.getDivision());
         }
 
+        user.setRole(Role.USER);
         // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
