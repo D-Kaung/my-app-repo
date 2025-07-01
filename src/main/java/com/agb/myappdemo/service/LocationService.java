@@ -26,10 +26,6 @@ public class LocationService {
         this.userDao = userDao;
     }
 
-    public List<Township> getAllTownship () {
-        return townshipDao.findAll();
-    }
-
     public List<Division> getAllDivision () {
         return divisionDao.findAll();
     }

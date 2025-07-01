@@ -131,7 +131,7 @@ public class MemberManagement {
         if (newAddress != null) user.setAddress(newAddress);
         user.setLatitude(newLatitude);
         user.setLongitude(newLongitude);
-        
+
         try {
             userService.saveUser(user);
             redirectAttributes.addFlashAttribute("success", "User update is successful.");

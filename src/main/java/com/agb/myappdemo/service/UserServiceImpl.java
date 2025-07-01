@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signUpUser(User user) throws Exception {
-
-
         // Validate unique fields
         if (userDao.existsByPhone(user.getPhone())) {
             throw new Exception("This Phone is already exists.");
@@ -42,7 +40,6 @@ public class UserServiceImpl implements UserService {
         if (userDao.existsByNrc(user.getNrc())) {
             throw new Exception("This nrc is already exists.");
         }
-
         // Set township from ID
         if (user.getTownship() != null && user.getTownship().getId() != null) {
             Township township = townshipDao.findById(user.getTownship().getId())
@@ -50,7 +47,6 @@ public class UserServiceImpl implements UserService {
             user.setTownship(township);
             user.setDivision(township.getDivision());
         }
-
         user.setRole(Role.USER);
         // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -94,10 +90,4 @@ public class UserServiceImpl implements UserService {
     public boolean existsByNrc(String newNrc) {
         return userDao.findByNrc(newNrc).isPresent();
     }
-
-    public void deleteUserById(int id) {
-        userDao.deleteById(id);
-    }
-
-
 }

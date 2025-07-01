@@ -31,7 +31,6 @@ public class DataExportService {
     public void generateExcel(OutputStream outputStream) throws IOException {
 
         List<User> users = userDao.findAll();
-
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("DataOfAllUsers");
         HSSFCellStyle dateCellStyle = workbook.createCellStyle();
@@ -62,24 +61,19 @@ public class DataExportService {
             dateCell.setCellStyle(dateCellStyle);
             dataRowIndex ++;
         }
-
         workbook.write(outputStream);
         workbook.close();
         outputStream.close();
-
     }
 
     public void generatePdf(OutputStream outputStream) throws DocumentException {
 
         List<User> users = userDao.findAll();
-
         Document document = new Document();
         PdfWriter.getInstance(document, outputStream);
         document.open();
-
         // Create table with number of columns = user fields
         PdfPTable table = new PdfPTable(6); // 6 columns for: username, nrc, phone, address, role, dob
-
         // Add headers
         Stream.of("Username", "NRC", "Phone", "Address", "Role", "Date Of Birth")
                 .forEach(headerTitle -> {
@@ -88,7 +82,6 @@ public class DataExportService {
                     header.setPhrase(new Phrase(headerTitle));
                     table.addCell(header);
                 });
-
         // Add user data
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
@@ -99,9 +92,7 @@ public class DataExportService {
             table.addCell(String.valueOf(user.getRole()));
             table.addCell(user.getDateOfBirth().toString());
         }
-
         document.add(table);
         document.close();
-
     }
 }

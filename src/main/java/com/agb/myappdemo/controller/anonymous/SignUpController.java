@@ -42,7 +42,6 @@ public class SignUpController {
                                 BindingResult result, HttpSession session,
                                 Model model) {
 
-
         if (result.hasErrors()) {
             model.addAttribute("divisions", divisionDao.findAll());
             return "signUp";
