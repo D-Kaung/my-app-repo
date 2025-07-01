@@ -29,6 +29,7 @@ public class SecurityConfig {
                                 "admin/updatePassword",
                                 "/users/excel/export",
                                 "/users/pdf/export",
+                                "/export/editUserPdf",
                                 "/township",
                                 "/divisions",
                                 "/update/divisionStatus",

@@ -1,6 +1,5 @@
 package com.agb.myappdemo.entity;
 
-import com.itextpdf.text.pdf.PdfPCell;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -31,12 +30,12 @@ public class User implements Serializable {
     private String password;
 
     @Column(unique = true, nullable = false)
-    @NotEmpty(message = "Phone number cannot be empty!")
+  //  @NotBlank(message = "Phone number cannot be empty!")
     @Pattern(regexp = "\\d+", message = "Phone number must be only digits!")
     private String phone;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty(message = "NRC cannot be empty!")
+  //  @NotBlank(message = "NRC cannot be empty!")
     @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
             message = "NRC must be in format (e.g., 5/ABC(N)123456)!")
     private String nrc;

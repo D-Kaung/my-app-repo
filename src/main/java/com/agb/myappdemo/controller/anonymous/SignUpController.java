@@ -52,11 +52,18 @@ public class SignUpController {
             session.setAttribute("userName", user.getUsername());
             return "redirect:/";  // Changed from "/signUp/success" to "/"
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Registration failed: " + e.getMessage());
-            model.addAttribute("divisions", divisionDao.findAll());
-            return "signUp";
+             if (e.getMessage().contains("nrc")) {
+             model.addAttribute("nrcError", e.getMessage());
+               } else if (e.getMessage().contains("Phone")) {
+                   model.addAttribute("phoneError", e.getMessage());
+               } else {
+                 model.addAttribute("errorMessage", "Registration failed: " + e.getMessage());
         }
+                model.addAttribute("divisions", divisionDao.findAll());
+               return "signUp";
     }
+
+}
 }
 
 

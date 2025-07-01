@@ -1,5 +1,6 @@
 package com.agb.myappdemo.service;
 
+import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
 import com.itextpdf.text.BaseColor;
@@ -9,9 +10,11 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import jakarta.servlet.ServletOutputStream;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,9 +49,9 @@ public class DataExportService {
         row.createCell(4).setCellValue("Role");
         row.createCell(5).setCellValue("DateOfBirth");
 
-       int dataRowIndex = 1;
-        for (int i =0; i < users.size(); i++){
-            User  user = users.get(i);
+        int dataRowIndex = 1;
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
             HSSFRow dataRow = sheet.createRow(dataRowIndex);
             dataRow.createCell(0).setCellValue(user.getUsername());
             dataRow.createCell(1).setCellValue(user.getNrc());
@@ -59,7 +62,7 @@ public class DataExportService {
             HSSFCell dateCell = dataRow.createCell(5);
             dateCell.setCellValue(user.getDateOfBirth());
             dateCell.setCellStyle(dateCellStyle);
-            dataRowIndex ++;
+            dataRowIndex++;
         }
         workbook.write(outputStream);
         workbook.close();
@@ -95,4 +98,40 @@ public class DataExportService {
         document.add(table);
         document.close();
     }
+
+    public void generatePdfFromEditForm(@RequestParam String username,
+                                        @RequestParam Role role,
+                                        @RequestParam String phone,
+                                        @RequestParam String nrc,
+                                        @RequestParam String address,
+                                        @RequestParam double latitude,
+                                        @RequestParam double longitude,
+                                        OutputStream outputStream) throws DocumentException {
+
+        Document document = new Document();
+        PdfWriter.getInstance(document, outputStream);
+        document.open();
+
+        PdfPTable table = new PdfPTable(7);
+        Stream.of("Username", "Role", "Phone", "NRC", "Address", "Latitude", "Longitude")
+                .forEach(headerTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.YELLOW);
+                    header.setPhrase(new Phrase(headerTitle));
+                    table.addCell(header);
+                });
+
+        table.addCell(username);
+        table.addCell(role.toString());
+        table.addCell(phone);
+        table.addCell(nrc);
+        table.addCell(address);
+        table.addCell(String.valueOf(latitude));
+        table.addCell(String.valueOf(longitude));
+
+        document.add(table);
+        document.close();
+    }
+
+
 }

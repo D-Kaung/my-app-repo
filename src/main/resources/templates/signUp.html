@@ -116,7 +116,6 @@
                         <label for="username">Username</label>
                         <input type="text" id="username" th:field="*{username}" class="form-control"
                                placeholder="Enter your username" />
-
                         <!-- This will show your @NotBlank custom error message -->
                         <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
                              class="text-danger"></div>
@@ -139,19 +138,20 @@
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="phone" th:field="*{phone}"
                                placeholder="Enter your phone number" >
-                        <div th:if="${#fields.hasErrors('phone')}" class="error-message"
-                             th:errors="*{phone}">Phone number is required!</div>
+                        <div th:if="${#fields.hasErrors('phone')}" class="text-danger"
+                             th:errors="*{phone}"></div>
                     </div>
 
                     <!-- NRC -->
                     <div class="form-group">
                         <label for="nrc" class="form-label">NRC Number</label>
                         <input type="text" class="form-control" id="nrc" th:field="*{nrc}"
-                               placeholder="Format: 12/ABC(N)123456" >
-                        <div class="nrc-format">Example: 12/ABC(N)123456</div>
-                        <div th:if="${#fields.hasErrors('nrc')}" class="error-message"
-                             th:errors="*{nrc}">NRC is required!</div>
+                               placeholder="Format: 12/ABC(N)123456">
+                        <div th:if="${#fields.hasErrors('nrc')}" class="text-danger"
+                             th:errors="*{nrc}"></div>
+<!--                        <div th:if="${nrcError}" class="error-message" th:text="${nrcError}"></div>-->
                     </div>
+
 
                     <!-- Date of Birth -->
                     <div class="form-group">
@@ -313,53 +313,7 @@
             this.value = "";
         }
     });
-    function showError(input, errorId, message) {
-        const errorElement = document.getElementById(errorId);
-        input.classList.add('is-invalid');
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-    }
 
-    // Helper function to reset all errors
-    function resetErrors() {
-        const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(error => {
-            error.style.display = 'none';
-        });
-
-        const inputs = document.querySelectorAll('.form-control');
-        inputs.forEach(input => {
-            input.classList.remove('is-invalid');
-        });
-    }
-
-    // Real-time validation for username
-    document.getElementById('username').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError(this, 'username-error', 'Username is required');
-        }
-    });
-
-    // Real-time validation for password
-    document.getElementById('password').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError(this, 'password-error', 'Password is required');
-        }
-    });
-
-    // Real-time validation for phone
-    document.getElementById('phone').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError(this, 'phone-error', 'Phone number is required');
-        }
-    });
-
-    // Real-time validation for NRC
-    document.getElementById('nrc').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError(this, 'nrc-error', 'NRC number is required');
-        }
-    });
 
     // Load the Google Maps API asynchronously
     function loadGoogleMapsApi(callback) {

@@ -102,10 +102,6 @@ public class AdminHomeController {
         return "memberPage";
     }
 
-
-
-
-
     @PostMapping("/admin/updatePassword")
     public String updatePassword(Model model,
                                  @AuthenticationPrincipal UserDetails userDetails,

@@ -505,12 +505,16 @@
                 </form>
             </div>
             <div class="modal-footer">
+
+                    <button class="export btn btn-warning text-start" onclick="exportEditUserWithPdf()">
+                        Export <i class="bi bi-filetype-pdf"></i>
+                    </button>
+
                 <button type="button" class="btn btn-success" onclick="submitEditForm()">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
@@ -838,7 +842,28 @@
         window.location.href='/users/pdf/export'
     }
 
-function prepareDelete(button) {
+    function exportEditUserWithPdf() {
+        const form = document.getElementById("editUserForm");
+
+        const formData = new FormData(form);
+
+        const queryParams = new URLSearchParams();
+        queryParams.append("username", formData.get("newUsername"));
+        queryParams.append("phone", formData.get("newPhone"));
+        queryParams.append("nrc", formData.get("newNrc"));
+        queryParams.append("address", formData.get("newAddress"));
+        queryParams.append("latitude", formData.get("newLatitude"));
+        queryParams.append("longitude", formData.get("newLongitude"));
+        queryParams.append("role", formData.get("newRole"));
+
+        const exportUrl = '/export/editUserPdf?' + queryParams.toString();
+
+        // Trigger download
+        window.location.href = exportUrl;
+    }
+
+
+    function prepareDelete(button) {
 const username = button.getAttribute('data-username');
 const userId = button.getAttribute('data-userId');
 
