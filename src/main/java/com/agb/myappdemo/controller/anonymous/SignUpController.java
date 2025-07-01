@@ -42,17 +42,19 @@ public class SignUpController {
                                 BindingResult result, HttpSession session,
                                 Model model) {
 
-        session.setAttribute("userName", user.getUsername());
+
         if (result.hasErrors()) {
-            model.addAttribute("division", divisionDao.findAll());
+            model.addAttribute("divisions", divisionDao.findAll());
             return "signUp";
         }
 
         try {
             userServiceImpl.signUpUser(user);
+            session.setAttribute("userName", user.getUsername());
             return "redirect:/";  // Changed from "/signUp/success" to "/"
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Registration failed: " + e.getMessage());
+            model.addAttribute("divisions", divisionDao.findAll());
             return "signUp";
         }
     }

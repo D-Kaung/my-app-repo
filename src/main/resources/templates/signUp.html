@@ -156,7 +156,10 @@
                     <!-- Date of Birth -->
                     <div class="form-group">
                         <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"
+                        >
+                        <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"
+                             class="text-danger"></div>
                     </div>
                 </fieldset>
             </div>
@@ -168,22 +171,26 @@
                     <!-- Division -->
                     <div class="form-group">
                         <label for="division" class="form-label">Division</label>
-                        <select class="form-control" id="division" th:field="*{division.id}" required>
+                        <select class="form-control" id="division" th:field="*{division.id}" >
                             <option value="">Select Division</option>
                             <option th:each="division : ${divisions}"
                                     th:value="${division.id}"
                                     th:text="${division.name}"></option>
                         </select>
+                        <div th:if="${#fields.hasErrors('division.id')}"
+                             th:errors="*{division.id}" class="text-danger"></div>
+
                     </div>
 
                     <!-- Township -->
                     <div class="form-group">
                         <label for="township" class="form-label">Township</label>
-                        <select class="form-control" id="township" name="township.id" required>
+                        <select class="form-control" id="township" name="township.id">
                             <option value="">Select Division First</option>
                         </select>
                         <input type="hidden" id="township-id-hidden" th:field="*{township.id}" />
-                        <div th:if="${#fields.hasErrors('township')}" class="error-message" th:errors="*{township}"></div>
+                        <div th:if="${#fields.hasErrors('township.id')}" th:errors="*{township.id}"
+                             class="text-danger"></div>
                     </div>
 
 
@@ -198,14 +205,14 @@
                             <div class="form-group">
                                 <label for="latitude" class="form-label">Latitude</label>
                                 <input type="text" class="form-control" id="latitude"
-                                       th:field="*{latitude}" required>
+                                       th:field="*{latitude}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="longitude" class="form-label">Longitude</label>
                                 <input type="text" class="form-control" id="longitude"
-                                       th:field="*{longitude}" required>
+                                       th:field="*{longitude}" >
                             </div>
                         </div>
                     </div>
@@ -275,7 +282,7 @@
 
             // Only update if both are selected
             if (divisionSelect.value && townshipSelect.value) {
-                addressField.value = `${selectedTownship}, ${selectedDivision}`;
+                addressField.value = `${selectedDivision}, ${selectedTownship}`;
             } else {
                 addressField.value = "";
             }

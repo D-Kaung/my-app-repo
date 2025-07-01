@@ -99,47 +99,5 @@ public class UserServiceImpl implements UserService {
         userDao.deleteById(id);
     }
 
-    public void generateExcel(HttpServletResponse response) throws IOException {
-
-        List<User> users = userDao.findAll();
-
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("DataOfAllUsers");
-        HSSFCellStyle dateCellStyle = workbook.createCellStyle();
-
-        HSSFDataFormat dataFormat = workbook.createDataFormat();
-        dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-mm-dd"));
-        HSSFRow row = sheet.createRow(0);
-
-        row.createCell(0).setCellValue("Username");
-        row.createCell(1).setCellValue("Nrc");
-        row.createCell(2).setCellValue("Phone");
-        row.createCell(3).setCellValue("Address");
-        row.createCell(4).setCellValue("Role");
-        row.createCell(5).setCellValue("DateOfBirth");
-
-        int dataRowIndex = 1;
-
-        for (User user: users){
-            HSSFRow dataRow = sheet.createRow(dataRowIndex);
-            dataRow.createCell(0).setCellValue(user.getUsername());
-            dataRow.createCell(1).setCellValue(user.getNrc());
-            dataRow.createCell(2).setCellValue(user.getPhone());
-            dataRow.createCell(3).setCellValue(user.getAddress());
-            dataRow.createCell(4).setCellValue(String.valueOf(user.getRole()));
-
-            HSSFCell dateCell = dataRow.createCell(5);
-            dateCell.setCellValue(user.getDateOfBirth());
-            dateCell.setCellStyle(dateCellStyle);
-            dataRowIndex ++;
-        }
-
-        ServletOutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
-
-    }
-
 
 }

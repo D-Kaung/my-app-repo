@@ -564,7 +564,13 @@
             <thead class="table-dark">
             <div class="row">
                 <div class="col-12 mb-2 text-end">
-                    <button class=" export btn btn-success" onclick="exportUserData()" >Export <i class="bi bi-filetype-xls"></i></button>
+                    <button class=" export btn btn-success" onclick="exportUserDataWithExcel()" >Export Excel
+                        <i class="bi bi-filetype-xls"></i></button>
+                </div>
+
+                <div class="col-12 mb-2 text-end">
+                    <button class=" export btn btn-warning" onclick="exportUserDataWithPdf()" >Export PDF
+                        <i class="bi bi-filetype-pdf"></i></button>
                 </div>
             </div>
 
@@ -824,9 +830,13 @@
             });
     }
 
-    function exportUserData() {
-      window.location.href='/users/export';
+    function exportUserDataWithExcel() {
+      window.location.href='/users/excel/export';
 }
+
+    function exportUserDataWithPdf() {
+        window.location.href='/users/pdf/export'
+    }
 
 function prepareDelete(button) {
 const username = button.getAttribute('data-username');

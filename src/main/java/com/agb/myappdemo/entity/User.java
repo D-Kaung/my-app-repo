@@ -1,12 +1,12 @@
 package com.agb.myappdemo.entity;
 
+import com.itextpdf.text.pdf.PdfPCell;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -42,29 +42,39 @@ public class User implements Serializable {
     private String nrc;
 
     @Column(nullable = false, name = "date_of_birth")
+    @NotNull(message = "Pls enter your birthday date.")
     private LocalDate dateOfBirth;
 
     private String address;
 
+    @NotNull(message = "Pls select your latitude.")
     private double latitude;
 
+    @NotNull(message = "Pls select your longitude.")
     private double longitude;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Valid
+    @NotNull(message = "Pls choice your division.")
     @ManyToOne
     @JoinColumn(name = "division_id", nullable = false)
     private Division division;
 
+    @Valid
+    @NotNull(message = "Pls choice your township.")
     @ManyToOne
     @JoinColumn(name = "township_id", nullable = false)
     private Township township;
 
-    public User(String username, String password, String phone, String nrc,
+
+
+    public User(int id, String username, String password, String phone, String nrc,
                 LocalDate dateOfBirth, String address,
                 double latitude, double longitude,
                 Role role, Division division, Township township) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -81,11 +91,9 @@ public class User implements Serializable {
     public User() {
 
     }
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }

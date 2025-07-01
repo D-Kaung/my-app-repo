@@ -3,6 +3,7 @@ package com.agb.myappdemo.controller.admin;
 import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
+import com.agb.myappdemo.service.DataExportService;
 import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserService;
 import com.agb.myappdemo.service.UserServiceImpl;
@@ -38,6 +39,7 @@ public class AdminHomeController {
     private final PasswordEncoder passwordEncoder;
     private final LocationService locationService;
 
+
     @Autowired
     public AdminHomeController(UserDao userDao, UserService userService,
                                UserServiceImpl userServiceImpl,
@@ -48,6 +50,7 @@ public class AdminHomeController {
         this.userServiceImpl = userServiceImpl;
         this.passwordEncoder = passwordEncoder;
         this.locationService = locationService;
+
     }
 
     @GetMapping("/admin/home")
@@ -217,12 +220,6 @@ public class AdminHomeController {
         return "redirect:/admin/home";
     }
 
-    @GetMapping("/users/export")
-    public void exportUsers(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=userList.xls");
-        userServiceImpl.generateExcel(response);
-    }
 
     @PostMapping("/admin/updatePassword")
     public String updatePassword(Model model,
