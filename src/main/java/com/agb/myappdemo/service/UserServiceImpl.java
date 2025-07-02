@@ -50,7 +50,6 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         // Save user
         userDao.save(user);
     }

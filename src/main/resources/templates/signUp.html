@@ -181,8 +181,8 @@
                                     th:value="${division.id}"
                                     th:text="${division.name}"></option>
                         </select>
-                        <div th:if="${#fields.hasErrors('division.id')}"
-                             th:errors="*{division.id}" class="text-danger"></div>
+                        <div th:if="${#fields.hasErrors('division')}"
+                             th:errors="*{division}" class="text-danger"></div>
 
                     </div>
 

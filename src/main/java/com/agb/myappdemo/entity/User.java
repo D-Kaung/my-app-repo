@@ -29,7 +29,6 @@ public class User implements Serializable {
     private String password;
 
     @Column(unique = true, nullable = false)
-
     @Pattern(regexp = "\\d+", message = "Phone number must be only digits and Cannot be empty!!")
     private String phone;
 
@@ -39,7 +38,7 @@ public class User implements Serializable {
     private String nrc;
 
     @Column(nullable = false, name = "date_of_birth")
-    @NotNull(message = "Please enter your birthday date and Cannot be empty!!")
+    @NotNull(message = "DateOfBirth cannot be empty and Please enter!!")
     private LocalDate dateOfBirth;
 
     private String address;
