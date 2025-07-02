@@ -34,14 +34,14 @@ public class DataExportController {
     @GetMapping("/users/excel/export")
     public void exportUsersExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=usersList.xls");
+        response.setHeader("Content-Disposition", "attachment;filename=UsersList.xls");
         dataExportService.generateExcel(response.getOutputStream());
     }
 
     @GetMapping("/users/pdf/export")
     public void exportUsersToPdf(HttpServletResponse response) throws IOException, DocumentException {
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment;filename=usersList.pdf");
+        response.setHeader("Content-Disposition", "attachment;filename=UsersList.pdf");
         dataExportService.generatePdf(response.getOutputStream());
     }
 

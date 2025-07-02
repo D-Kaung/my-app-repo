@@ -140,6 +140,9 @@
                                placeholder="Enter your phone number" >
                         <div th:if="${#fields.hasErrors('phone')}" class="text-danger"
                              th:errors="*{phone}"></div>
+                        <!-- Phone error -->
+                        <div th:if="${phoneError}" class="text-danger" th:text="${phoneError}"></div>
+
                     </div>
 
                     <!-- NRC -->
@@ -149,7 +152,8 @@
                                placeholder="Format: 12/ABC(N)123456">
                         <div th:if="${#fields.hasErrors('nrc')}" class="text-danger"
                              th:errors="*{nrc}"></div>
-<!--                        <div th:if="${nrcError}" class="error-message" th:text="${nrcError}"></div>-->
+                        <!-- NRC error -->
+                        <div th:if="${nrcError}" class="text-danger" th:text="${nrcError}"></div>
                     </div>
 
 

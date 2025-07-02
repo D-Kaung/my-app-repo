@@ -3,7 +3,6 @@ package com.agb.myappdemo.entity;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
@@ -22,26 +21,25 @@ public class User implements Serializable {
     private int id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Username cannot be empty!! Pls enter your username.")
+    @NotBlank(message = "Username cannot be empty and Please enter!!")
     private String username;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Please enter password.Password cannot be empty!")
+    @NotBlank(message = "Password cannot be empty and Please enter!!")
     private String password;
 
     @Column(unique = true, nullable = false)
-  //  @NotBlank(message = "Phone number cannot be empty!")
-    @Pattern(regexp = "\\d+", message = "Phone number must be only digits!")
+
+    @Pattern(regexp = "\\d+", message = "Phone number must be only digits and Cannot be empty!!")
     private String phone;
 
     @Column(nullable = false, unique = true)
-  //  @NotBlank(message = "NRC cannot be empty!")
     @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
-            message = "NRC must be in format (e.g., 5/ABC(N)123456)!")
+            message = "NRC must be in format (e.g., 5/ABC(N)123456) and Cannot be empty!!")
     private String nrc;
 
     @Column(nullable = false, name = "date_of_birth")
-    @NotNull(message = "Pls enter your birthday date.")
+    @NotNull(message = "Please enter your birthday date and Cannot be empty!!")
     private LocalDate dateOfBirth;
 
     private String address;
@@ -114,24 +112,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-  @NotEmpty(message = "Phone number cannot be empty!")
-    @Pattern(regexp = "\\d+", message = "Phone number must be only digits!")
-  public String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(@NotEmpty(message = "Phone number cannot be empty!") @Pattern(regexp = "\\d+", message = "Phone number must be only digits!") String phone) {
+    public void setPhone( String phone) {
         this.phone = phone;
     }
 
-    public @NotEmpty(message = "NRC cannot be empty!")
-    @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
-            message = "NRC must be in format (e.g., 5/ABC(N)123456)!") String getNrc() {
+    public  String getNrc() {
         return nrc;
     }
 
-    public void setNrc(@NotEmpty(message = "NRC cannot be empty!") @Pattern(regexp = "^\\d{1,2}/[A-Za-z]{2,7}\\(N\\)\\d{6}$",
-            message = "NRC must be in format (e.g., 5/ABC(N)123456)!") String nrc) {
+    public void setNrc(String nrc) {
         this.nrc = nrc;
     }
 
