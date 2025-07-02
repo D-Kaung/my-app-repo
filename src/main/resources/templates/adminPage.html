@@ -821,8 +821,7 @@
                   </td>
 </tr>
                 `;
-
-
+                    
                     tbody.append(row);
                 });
 
@@ -833,10 +832,9 @@
                 console.error('Error fetching users:', error);
             });
     }
-
     function exportUserDataWithExcel() {
-      window.location.href='/users/excel/export';
-}
+        window.location.href='/users/excel/export';
+    }
 
     function exportUserDataWithPdf() {
         window.location.href='/users/pdf/export'
@@ -861,7 +859,6 @@
         // Trigger download
         window.location.href = exportUrl;
     }
-
 
     function prepareDelete(button) {
 const username = button.getAttribute('data-username');
