@@ -3,9 +3,11 @@ package com.agb.myappdemo.controller.admin;
 import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.service.DataExportService;
+import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.List;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,13 +24,13 @@ import java.io.OutputStream;
 public class DataExportController {
 
     private final DataExportService dataExportService;
-    private final UserServiceImpl userServiceImpl;
+    private final LocationService locationService;
 
     @Autowired
     public DataExportController(DataExportService dataExportService,
-                                UserServiceImpl userServiceImpl) {
+                                LocationService locationService) {
         this.dataExportService = dataExportService;
-        this.userServiceImpl = userServiceImpl;
+        this.locationService = locationService;
     }
 
     @GetMapping("/users/excel/export")
@@ -45,19 +47,20 @@ public class DataExportController {
         dataExportService.generatePdf(response.getOutputStream());
     }
 
-@GetMapping("/export/editUserPdf")
-public void exportEditUserPdf(@RequestParam String username,
-                              @RequestParam Role role,
-                              @RequestParam String phone,
-                              @RequestParam String nrc,
-                              @RequestParam String address,
-                              @RequestParam double latitude,
-                              @RequestParam double longitude,
+   @GetMapping("/export/userDivision")
+   public void exportUserPdfFromDivision(@RequestParam Long divisionId,
                               HttpServletResponse response) throws IOException, DocumentException {
 
     response.setContentType("application/pdf");
     response.setHeader("Content-Disposition", "attachment; filename=User.pdf");
-    dataExportService.generatePdfFromEditForm(username, role, phone, nrc, address, latitude, longitude,
-            response.getOutputStream());
+    dataExportService.generatePdfFromFetchUserDivision(divisionId,response.getOutputStream());
+   }
+
+   @GetMapping("/export/userTownship")
+   public void exportUserPdfFromTownship(@RequestParam Long townshipId,
+                                          HttpServletResponse response) throws IOException, DocumentException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=User.pdf");
+        dataExportService.generateUserPdfFromTownship(townshipId, response.getOutputStream());
    }
 }

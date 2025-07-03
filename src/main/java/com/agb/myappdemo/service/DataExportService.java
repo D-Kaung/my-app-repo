@@ -1,6 +1,5 @@
 package com.agb.myappdemo.service;
 
-import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
 import com.itextpdf.text.BaseColor;
@@ -10,7 +9,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import jakarta.servlet.ServletOutputStream;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,12 @@ import java.util.stream.Stream;
 public class DataExportService {
 
     private final UserDao userDao;
+    private final LocationService locationService;
 
     @Autowired
-    public DataExportService(UserDao userDao) {
+    public DataExportService(UserDao userDao, LocationService locationService) {
         this.userDao = userDao;
+        this.locationService = locationService;
     }
 
     public void generateExcel(OutputStream outputStream) throws IOException {
@@ -42,24 +42,26 @@ public class DataExportService {
         dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-mm-dd"));
         HSSFRow row = sheet.createRow(0);
 
-        row.createCell(0).setCellValue("Username");
-        row.createCell(1).setCellValue("Nrc");
-        row.createCell(2).setCellValue("Phone");
-        row.createCell(3).setCellValue("Address");
-        row.createCell(4).setCellValue("Role");
-        row.createCell(5).setCellValue("DateOfBirth");
+        row.createCell(0).setCellValue("No");
+        row.createCell(1).setCellValue("Username");
+        row.createCell(2).setCellValue("Nrc");
+        row.createCell(3).setCellValue("Phone");
+        row.createCell(4).setCellValue("Address");
+        row.createCell(5).setCellValue("Role");
+        row.createCell(6).setCellValue("DateOfBirth");
 
         int dataRowIndex = 1;
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             HSSFRow dataRow = sheet.createRow(dataRowIndex);
-            dataRow.createCell(0).setCellValue(user.getUsername());
-            dataRow.createCell(1).setCellValue(user.getNrc());
-            dataRow.createCell(2).setCellValue(user.getPhone());
-            dataRow.createCell(3).setCellValue(user.getAddress());
-            dataRow.createCell(4).setCellValue(String.valueOf(user.getRole()));
+            dataRow.createCell(0).setCellValue(String.valueOf(i+1));
+            dataRow.createCell(1).setCellValue(user.getUsername());
+            dataRow.createCell(2).setCellValue(user.getNrc());
+            dataRow.createCell(3).setCellValue(user.getPhone());
+            dataRow.createCell(4).setCellValue(user.getAddress());
+            dataRow.createCell(5).setCellValue(String.valueOf(user.getRole()));
 
-            HSSFCell dateCell = dataRow.createCell(5);
+            HSSFCell dateCell = dataRow.createCell(6);
             dateCell.setCellValue(user.getDateOfBirth());
             dateCell.setCellStyle(dateCellStyle);
             dataRowIndex++;
@@ -76,9 +78,9 @@ public class DataExportService {
         PdfWriter.getInstance(document, outputStream);
         document.open();
         // Create table with number of columns = user fields
-        PdfPTable table = new PdfPTable(6); // 6 columns for: username, nrc, phone, address, role, dob
+        PdfPTable table = new PdfPTable(7); // 6 columns for: username, nrc, phone, address, role, dob
         // Add headers
-        Stream.of("Username", "NRC", "Phone", "Address", "Role", "Date Of Birth")
+        Stream.of("No","Username", "NRC", "Phone", "Address", "Role", "Date Of Birth")
                 .forEach(headerTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.YELLOW);
@@ -88,6 +90,7 @@ public class DataExportService {
         // Add user data
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
+            table.addCell(String.valueOf(i+1));
             table.addCell(user.getUsername());
             table.addCell(user.getNrc());
             table.addCell(user.getPhone());
@@ -99,21 +102,49 @@ public class DataExportService {
         document.close();
     }
 
-    public void generatePdfFromEditForm(@RequestParam String username,
-                                        @RequestParam Role role,
-                                        @RequestParam String phone,
-                                        @RequestParam String nrc,
-                                        @RequestParam String address,
-                                        @RequestParam double latitude,
-                                        @RequestParam double longitude,
-                                        OutputStream outputStream) throws DocumentException {
+    public void generatePdfFromFetchUserDivision(@RequestParam Long divisionId,
+                                         OutputStream outputStream) throws DocumentException {
 
         Document document = new Document();
         PdfWriter.getInstance(document, outputStream);
         document.open();
 
-        PdfPTable table = new PdfPTable(7);
-        Stream.of("Username", "Role", "Phone", "NRC", "Address", "Latitude", "Longitude")
+        PdfPTable table = new PdfPTable(8);
+        Stream.of("No","Username", "Role", "Phone", "NRC", "Address", "Latitude", "Longitude")
+                .forEach(headerTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.YELLOW);
+                    header.setPhrase(new Phrase(headerTitle));
+                    table.addCell(header);
+                });
+        List<User> users = locationService.getAllUserByDivisionId(divisionId);
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            table.addCell(String.valueOf(i+1));
+            table.addCell(user.getUsername());
+            table.addCell(String.valueOf(user.getRole()));
+            table.addCell(user.getPhone());
+            table.addCell(user.getNrc());
+            table.addCell(user.getAddress());
+            table.addCell(String.valueOf(user.getLatitude()));
+            table.addCell(String.valueOf(user.getLongitude()));
+        }
+
+            document.add(table);
+        document.close();
+    }
+
+    public void generateUserPdfFromTownship(@RequestParam Long townshipId,
+                                            OutputStream outputStream
+                                       ) throws DocumentException {
+
+        Document document = new Document();
+        PdfWriter.getInstance(document,outputStream);
+        document.open();
+
+        PdfPTable table = new PdfPTable(8);
+        Stream.of("No", "Username", "Role", "Phone", "NRC", "Address", "Latitude", "Longitude")
                 .forEach(headerTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.YELLOW);
@@ -121,17 +152,21 @@ public class DataExportService {
                     table.addCell(header);
                 });
 
-        table.addCell(username);
-        table.addCell(role.toString());
-        table.addCell(phone);
-        table.addCell(nrc);
-        table.addCell(address);
-        table.addCell(String.valueOf(latitude));
-        table.addCell(String.valueOf(longitude));
+        List<User> users = locationService.getAllUserByTownshipId(townshipId);
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            table.addCell(String.valueOf(i+1));
+            table.addCell(user.getUsername());
+            table.addCell(String.valueOf(user.getRole()));
+            table.addCell(user.getPhone());
+            table.addCell(user.getNrc());
+            table.addCell(user.getAddress());
+            table.addCell(String.valueOf(user.getLatitude()));
+            table.addCell(String.valueOf(user.getLongitude()));
+        }
 
         document.add(table);
         document.close();
     }
-
-
 }

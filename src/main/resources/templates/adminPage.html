@@ -506,10 +506,6 @@
             </div>
             <div class="modal-footer">
 
-                    <button class="export btn btn-warning text-start" onclick="exportEditUserWithPdf()">
-                        Export <i class="bi bi-filetype-pdf"></i>
-                    </button>
-
                 <button type="button" class="btn btn-success" onclick="submitEditForm()">Save changes</button>
             </div>
         </div>
@@ -564,6 +560,11 @@
                         <option value="">Select division first</option>
                     </select>
                 </div>
+            </div>
+            <div class="col-md-auto">
+                <button class="export btn btn-outline-secondary text-start" onclick="exportUsersByDivisionPdf()">
+                    Export <i class="bi bi-filetype-pdf"></i>
+                </button>
             </div>
             <thead class="table-dark">
             <div class="row">
@@ -839,25 +840,27 @@
     function exportUserDataWithPdf() {
         window.location.href='/users/pdf/export'
     }
+    function exportUsersByDivisionPdf() {
+        const divisionId = $('#divisionSelect').val();
+        const townshipId = $('#townshipSelect').val();
 
-    function exportEditUserWithPdf() {
-        const form = document.getElementById("editUserForm");
+        let url = '';
 
-        const formData = new FormData(form);
+        if (townshipId) {
+            url = `/export/userTownship?townshipId=${townshipId}`;
+        } else if (divisionId) {
+            url = `/export/userDivision?divisionId=${divisionId}`;
+        } else {
+            alert("Please select at least a division.");
+            return;
+        }
 
-        const queryParams = new URLSearchParams();
-        queryParams.append("username", formData.get("newUsername"));
-        queryParams.append("phone", formData.get("newPhone"));
-        queryParams.append("nrc", formData.get("newNrc"));
-        queryParams.append("address", formData.get("newAddress"));
-        queryParams.append("latitude", formData.get("newLatitude"));
-        queryParams.append("longitude", formData.get("newLongitude"));
-        queryParams.append("role", formData.get("newRole"));
-
-        const exportUrl = '/export/editUserPdf?' + queryParams.toString();
-
-        // Trigger download
-        window.location.href = exportUrl;
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank'; // open in new tab
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     function prepareDelete(button) {
