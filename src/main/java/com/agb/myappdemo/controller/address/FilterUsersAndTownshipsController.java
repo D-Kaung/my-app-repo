@@ -38,7 +38,6 @@ public class FilterUsersAndTownshipsController {
     public List<UserDto> getUserByTownshipId(@RequestParam("townshipId")Long townshipId) {
 
         List<User> users = locationService.getAllUserByTownshipId(townshipId);
-
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getUsername(), u.getPhone(), u.getNrc()
                         , u.getAddress(), u.getDateOfBirth(), u.getRole(), u.getLatitude(), u.getLongitude()))
