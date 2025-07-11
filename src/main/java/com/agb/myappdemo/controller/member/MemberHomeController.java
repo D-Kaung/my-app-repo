@@ -2,6 +2,7 @@ package com.agb.myappdemo.controller.member;
 
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,17 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
+@RequiredArgsConstructor
 public class MemberHomeController {
 
     private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    public MemberHomeController(UserServiceImpl userServiceImpl, PasswordEncoder passwordEncoder) {
-        this.userServiceImpl = userServiceImpl;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @GetMapping("/member/home")
     public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {

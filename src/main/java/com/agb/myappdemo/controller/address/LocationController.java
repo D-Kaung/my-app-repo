@@ -11,6 +11,7 @@ import com.agb.myappdemo.repository.DivisionDao;
 import com.agb.myappdemo.repository.TownshipDao;
 import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,29 +22,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Controller
 @CrossOrigin(origins = "http://localhost:8080")
+@RequiredArgsConstructor
 public class LocationController {
 
     private final LocationService locationService;
     private final UserServiceImpl userServiceImpl;
     private final TownshipDao townshipDao;
     private final DivisionDao divisionDao;
-
-
-    @Autowired
-    public LocationController(LocationService locationService,
-                              UserServiceImpl userServiceImpl,
-                              TownshipDao townshipDao,
-                              DivisionDao divisionDao) {
-        this.locationService = locationService;
-        this.userServiceImpl = userServiceImpl;
-        this.townshipDao = townshipDao;
-        this.divisionDao = divisionDao;
-    }
 
     @GetMapping("/township")
     String viewTownship(@RequestParam(defaultValue = "")String search,

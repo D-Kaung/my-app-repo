@@ -11,6 +11,7 @@ import com.itextpdf.text.List;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,20 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 @Controller
+@RequiredArgsConstructor
 public class DataExportController {
 
     private final DataExportService dataExportService;
     private final LocationService locationService;
 
-    @Autowired
-    public DataExportController(DataExportService dataExportService,
-                                LocationService locationService) {
-        this.dataExportService = dataExportService;
-        this.locationService = locationService;
-    }
 
     @GetMapping("/users/excel/export")
     public void exportUsersExcel(HttpServletResponse response) throws IOException {

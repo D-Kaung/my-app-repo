@@ -22,8 +22,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/member/home"); // or your user page
         } else {
-            response.sendRedirect("/member/home"); // fallback
+            response.sendRedirect("/signIn"); // fallback
         }
     }
-
-    }
+}

@@ -7,24 +7,20 @@ import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.DivisionDao;
 import com.agb.myappdemo.repository.TownshipDao;
 import com.agb.myappdemo.repository.UserDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LocationService {
 
     private final DivisionDao divisionDao;
     private final TownshipDao townshipDao;
     private final UserDao userDao;
 
-    @Autowired
-    public LocationService(DivisionDao divisionDao, TownshipDao townshipDao, UserDao userDao) {
-        this.divisionDao = divisionDao;
-        this.townshipDao = townshipDao;
-        this.userDao = userDao;
-    }
 
     public List<Division> getAllDivision () {
         return divisionDao.findAll();

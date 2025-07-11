@@ -6,6 +6,7 @@ import com.agb.myappdemo.repository.UserDao;
 import com.agb.myappdemo.service.UserService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,19 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberManagement {
 
     private final UserDao userDao;
     private final UserServiceImpl userServiceImpl;
     private final UserService userService;
-
-    @Autowired
-    public MemberManagement(UserDao userDao, UserServiceImpl userServiceImpl,
-                            UserService userService){
-        this.userDao = userDao;
-        this.userServiceImpl = userServiceImpl;
-        this.userService = userService;
-    }
 
     @PostMapping("/delete")
     public String deleteUser(@AuthenticationPrincipal UserDetails userDetails,

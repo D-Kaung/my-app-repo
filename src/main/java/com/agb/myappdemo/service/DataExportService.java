@@ -9,6 +9,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
+@RequiredArgsConstructor
 public class DataExportService {
 
     private final UserDao userDao;
     private final LocationService locationService;
-
-    @Autowired
-    public DataExportService(UserDao userDao, LocationService locationService) {
-        this.userDao = userDao;
-        this.locationService = locationService;
-    }
 
     public void generateExcel(OutputStream outputStream) throws IOException {
 

@@ -1,10 +1,18 @@
 package com.agb.myappdemo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Township {
 
     @Id
@@ -24,62 +32,4 @@ public class Township {
 
     @OneToMany(mappedBy = "township", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
-
-
-
-    public Township(String name,
-                    Double latitude,
-                    Double longitude,
-                    Status status, Division division, List<User> users) {
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.status = status;
-        this.division = division;
-        this.users = users;
-    }
-
-    public Township() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Division getDivision() {
-        return division;
-    }
-
-    public void setDivision(Division division) {
-        this.division = division;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 }

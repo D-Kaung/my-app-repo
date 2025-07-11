@@ -1,16 +1,11 @@
 package com.agb.myappdemo.controller.admin;
 
-import com.agb.myappdemo.entity.Role;
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
-import com.agb.myappdemo.service.DataExportService;
 import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserService;
 import com.agb.myappdemo.service.UserServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,16 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminHomeController {
 
     private final UserDao userDao;
@@ -38,20 +31,6 @@ public class AdminHomeController {
     private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
     private final LocationService locationService;
-
-
-    @Autowired
-    public AdminHomeController(UserDao userDao, UserService userService,
-                               UserServiceImpl userServiceImpl,
-                               PasswordEncoder passwordEncoder,
-                               LocationService locationService) {
-        this.userDao = userDao;
-        this.userService = userService;
-        this.userServiceImpl = userServiceImpl;
-        this.passwordEncoder = passwordEncoder;
-        this.locationService = locationService;
-
-    }
 
     @GetMapping("/admin/home")
     public String adminPage(@RequestParam(name = "search", defaultValue = "",

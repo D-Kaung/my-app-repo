@@ -2,6 +2,7 @@ package com.agb.myappdemo.service;
 
 import com.agb.myappdemo.entity.User;
 import com.agb.myappdemo.repository.UserDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,14 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
    private final UserDao userDao;
-
-   @Autowired
-    public CustomUserDetailsService(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

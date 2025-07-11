@@ -6,6 +6,7 @@ import com.agb.myappdemo.service.LocationService;
 import com.agb.myappdemo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/signUp")
+@RequiredArgsConstructor
 public class SignUpController {
 
     private final UserServiceImpl userServiceImpl;
     private final DivisionDao divisionDao;
     private final LocationService locationService;
-
-    @Autowired
-    public SignUpController(UserServiceImpl userServiceImpl, DivisionDao divisionDao, LocationService locationService) {
-        this.userServiceImpl = userServiceImpl;
-        this.divisionDao = divisionDao;
-        this.locationService = locationService;
-    }
 
     @GetMapping
     public String showSignUpForm(Model model) {

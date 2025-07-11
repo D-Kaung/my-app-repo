@@ -8,6 +8,7 @@ import com.agb.myappdemo.repository.UserDao;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,19 +18,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final TownshipDao townshipDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder,
-                           TownshipDao townshipDao) {
-        this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
-        this.townshipDao = townshipDao;
-    }
 
     @Override
     public void signUpUser(User user) throws Exception {
